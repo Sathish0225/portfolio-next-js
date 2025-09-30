@@ -134,7 +134,7 @@ export default function BlogPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-card border-b border-border/50 sticky top-0 z-10">
+      <header className="mt-5">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <Button
             variant="ghost"
