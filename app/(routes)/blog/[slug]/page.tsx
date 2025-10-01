@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft, Tag, Share2, Calendar, Clock } from "lucide-react";
 import Image from "next/image";
@@ -44,68 +44,77 @@ export default function BlogPage() {
 
   const renderContent = () => {
     const lines = blog.content.split("\n");
+    const elements: JSX.Element[] = [];
+
+    for (let index = 0; index < lines.length; index++) {
+      const line = lines[index];
+
+      if (line.startsWith("# ")) {
+        elements.push(
+          <h1 key={index} className="text-3xl font-bold  first:mt-0">
+            {line.substring(2)}
+          </h1>
+        );
+      } else if (line.startsWith("## ")) {
+        elements.push(
+          <h2 key={index} className="text-2xl font-semibold">
+            {line.substring(3)}
+          </h2>
+        );
+      } else if (line.startsWith("### ")) {
+        elements.push(
+          <h3 key={index} className="text-xl font-semibold">
+            {line.substring(4)}
+          </h3>
+        );
+      } else if (
+        line.startsWith("```javascript") ||
+        line.startsWith("```typescript") ||
+        line.startsWith("```json") ||
+        line.startsWith("```")
+      ) {
+        // collect code block
+        let codeContent = "";
+        index++;
+        while (index < lines.length && !lines[index].startsWith("```")) {
+          codeContent += lines[index] + "\n";
+          index++;
+        }
+        elements.push(
+          <Card
+            key={index}
+            className="bg-muted p-6 font-mono text-sm overflow-x-auto"
+          >
+            <pre className="whitespace-pre-wrap">{codeContent}</pre>
+          </Card>
+        );
+      } else if (line.startsWith("```")) {
+        // skip raw ``` markers
+        continue;
+      } else if (line.trim() === "") {
+        elements.push(<div key={index} className="h-4" />);
+      } else if (line.startsWith("- ")) {
+        elements.push(
+          <li key={index} className="mb-2">
+            {line.substring(2)}
+          </li>
+        );
+      } else if (line.trim() === "---") {
+        elements.push(
+          <hr key={index} className="border-t border-muted-foreground/30" />
+        );
+      } else {
+        elements.push(
+          <p key={index} className="mb-2 leading-relaxed text-foreground">
+            {line}
+          </p>
+        );
+      }
+    }
+
     return (
       <div className="prose prose-slate max-w-none dark:prose-invert">
-        {lines.map((line, index) => {
-          if (line.startsWith("# ")) {
-            return (
-              <h1
-                key={index}
-                className="text-3xl font-bold mb-6 mt-8 first:mt-0"
-              >
-                {line.substring(2)}
-              </h1>
-            );
-          } else if (line.startsWith("## ")) {
-            return (
-              <h2 key={index} className="text-2xl font-semibold mb-4 mt-8">
-                {line.substring(3)}
-              </h2>
-            );
-          } else if (line.startsWith("### ")) {
-            return (
-              <h3 key={index} className="text-xl font-semibold mb-3 mt-6">
-                {line.substring(4)}
-              </h3>
-            );
-          } else if (
-            line.startsWith("```javascript") ||
-            line.startsWith("```typescript") ||
-            line.startsWith("```json")
-          ) {
-            // Find the closing ```
-            let codeContent = "";
-            let i = index + 1;
-            while (i < lines.length && !lines[i].startsWith("```")) {
-              codeContent += lines[i] + "\n";
-              i++;
-            }
-            return (
-              <Card
-                key={index}
-                className="bg-muted p-6 font-mono text-sm my-6 overflow-x-auto"
-              >
-                <pre className="whitespace-pre-wrap">{codeContent}</pre>
-              </Card>
-            );
-          } else if (line.startsWith("```")) {
-            return null; // Skip standalone ```
-          } else if (line.trim() === "") {
-            return <div key={index} className="h-4" />;
-          } else if (line.startsWith("- ")) {
-            return (
-              <li key={index} className="mb-2">
-                {line.substring(2)}
-              </li>
-            );
-          } else {
-            return (
-              <p key={index} className="mb-4 leading-relaxed text-foreground">
-                {line}
-              </p>
-            );
-          }
-        })}
+        {elements}
       </div>
     );
   };
