@@ -299,6 +299,7 @@ TypeScript transforms JavaScript development by adding static typing. Here are t
 ---
 
 ### Use Descriptive Type Names
+
 \`\`\`typescript
 // Good
 interface UserProfile {
@@ -315,6 +316,7 @@ interface Data {
 \`\`\`
 
 ### Leverage Union Types
+
 \`\`\`typescript
 type Status = 'loading' | 'success' | 'error'
 type Theme = 'light' | 'dark' | 'auto'
@@ -331,6 +333,7 @@ interface AppState {
 ---
 
 ### Generic Constraints
+
 \`\`\`typescript
 interface Identifiable {
   id: string
@@ -345,6 +348,7 @@ function updateEntity<T extends Identifiable>(
 \`\`\`
 
 ### Utility Types
+
 \`\`\`typescript
 // Pick specific properties
 type UserSummary = Pick<User, 'id' | 'name' | 'email'>
@@ -361,6 +365,7 @@ type ReadonlyUser = Readonly<User>
 ---
 
 ### Result Pattern
+
 \`\`\`typescript
 type Result<T, E = Error> = 
   | { success: true; data: T }
@@ -381,6 +386,7 @@ async function fetchUser(id: string): Promise<Result<User>> {
 ---
 
 ### Feature-Based Organization
+
 \`\`\`
 src/
   types/
@@ -404,6 +410,7 @@ src/
 ---
 
 ### tsconfig.json Best Practices
+
 \`\`\`json
 {
   "compilerOptions": {

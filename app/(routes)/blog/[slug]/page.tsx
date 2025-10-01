@@ -95,7 +95,7 @@ export default function BlogPage() {
         elements.push(<div key={index} className="h-4" />);
       } else if (line.startsWith("- ")) {
         elements.push(
-          <li key={index} className="mb-2">
+          <li key={index} className="mb-2 ml-5">
             {line.substring(2)}
           </li>
         );
