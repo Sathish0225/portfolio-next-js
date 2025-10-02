@@ -1,11 +1,14 @@
 export interface Project {
   id: string;
+  category: string;
   title: string;
   description: string;
   longDescription?: string;
   technologies: string[];
   achievements: string[];
+  content: string;
   image: string;
+  date: string;
   github?: string;
   liveUrl?: string;
   featured: boolean;
@@ -14,6 +17,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: "iSecure360",
+    category: "Web Application",
     title: "iSecure360",
     description:
       "iSecure360 simplifies security workforce and operations management with an intuitive interface, available on both mobile and web platforms. Its multi-tenant setup ensures isolated data for each client while maintaining a single codebase for efficient maintenance.",
@@ -32,13 +36,44 @@ export const projects: Project[] = [
       "Enabled offline guard tour logging with auto-sync, ensuring 100% data accuracy even in low-connectivity environments",
       "Improved visitor management efficiency by 60% using QR-based check-in and pre-registration workflows",
     ],
+    content: ``,
     image: "/images/projects/iSecure360.png",
+    date: "2024-09-15",
+    github: "",
+    liveUrl: "",
+    featured: true,
+  },
+  {
+    id: "iSecure360-mobile",
+    category: "Flutter Application",
+    title: "iSecure360 Mobile App",
+    description:
+      "The Flutter mobile app for iSecure360 empowers security guards to log attendance, patrols, and incidents in real-time, even offline, ensuring seamless operations across multiple client sites.",
+    longDescription:
+      "The iSecure360 Mobile App is built with Flutter to provide security staff with an intuitive, fast, and offline-capable experience. Guards can log patrols, report incidents, and capture photos directly from the app. All data automatically syncs with the iSecure360 web platform when connectivity is restored, ensuring accurate records. The app supports QR-based visitor check-in and integrates with the main platform for full operational visibility.",
+    technologies: [
+      "Flutter",
+      "Dart",
+      "REST API",
+      "SQLite (Offline Storage)",
+      "Push Notifications",
+    ],
+    achievements: [
+      "Enabled offline patrol logging and auto-sync to backend, ensuring 100% data accuracy",
+      "Reduced incident reporting time by 50% through real-time mobile submissions",
+      "Integrated QR-based visitor check-in for faster on-site processing",
+      "Improved accountability and communication between guards and management",
+    ],
+    content: ``,
+    image: "/images/projects/isecure360-mobile.png",
+    date: "2024-09-20",
     github: "",
     liveUrl: "",
     featured: true,
   },
   {
     id: "iSecureVMS",
+    category: "Web Application",
     title: "iSecureVMS",
     description:
       "iSecureVMS streamlines visitor and contractor management with a secure, user-friendly platform available on both web and mobile. It enhances workplace safety and efficiency through digital workflows and real-time monitoring.",
@@ -57,13 +92,44 @@ export const projects: Project[] = [
       "Automated email and SMS notifications, improving visitor communication efficiency",
       "Enhanced compliance by digitizing visitor logs and enabling customizable reporting",
     ],
+    content: ``,
     image: "/images/projects/iSecureVMS.png",
+    date: "2024-09-15",
+    github: "",
+    liveUrl: "",
+    featured: true,
+  },
+  {
+    id: "iSecureVMS-mobile",
+    category: "Flutter Application",
+    title: "iSecureVMS Mobile App",
+    description:
+      "The Flutter mobile app for iSecureVMS empowers reception staff, security officers, and hosts to manage visitor and contractor activities in real time, with offline support and QR code check-in/out.",
+    longDescription:
+      "The iSecureVMS Mobile App, built with Flutter, extends the web platform’s capabilities directly to smartphones and tablets. Security officers and reception staff can check in/out visitors via QR code scanning, view upcoming pre-registered visitors, and log contractor entries. Hosts receive instant push notifications upon visitor arrival. Offline-first support ensures check-in/out can still be performed during connectivity issues, with data syncing automatically once online. The app integrates seamlessly with access control devices and the iSecureVMS web backend for complete visitor management.",
+    technologies: [
+      "Flutter",
+      "Dart",
+      "REST API",
+      "Push Notifications",
+      "QR Code Scanner",
+    ],
+    achievements: [
+      "Streamlined visitor and contractor check-in with QR code scanning",
+      "Delivered push notifications to hosts for real-time visitor arrival alerts",
+      "Enabled offline visitor logging with auto-sync, ensuring no data loss",
+      "Improved front-desk efficiency by 45% compared to manual processes",
+    ],
+    content: ``,
+    image: "/images/projects/isecurevms-mobile.png",
+    date: "2024-09-20",
     github: "",
     liveUrl: "",
     featured: true,
   },
   {
     id: "avms",
+    category: "Web Application",
     title: "AVMS",
     description:
       "AVMS is a comprehensive Access Control and Visitor Management System for condos, offices, and secure facilities, combining visitor, vehicle, and facility management in one seamless platform across web and mobile.",
@@ -87,13 +153,16 @@ export const projects: Project[] = [
       "Enabled residents to seamlessly book facilities, submit feedback, and complete e-forms through mobile apps",
       "Strengthened security with centralized Access Control Module integrating with turnstiles, barriers, and ANPR cameras",
     ],
+    content: ``,
     image: "/images/projects/avms.png",
+    date: "2025-04-01",
     github: "",
     liveUrl: "",
     featured: true,
   },
   {
     id: "vrs",
+    category: "Windows Application",
     title: "VRS (Vehicle Registration System)",
     description:
       "VRS is a Windows-based Vehicle Registration System designed to log visitor and resident vehicle movement with integrated live video feed and automatic license plate recognition (ANPR).",
@@ -112,13 +181,16 @@ export const projects: Project[] = [
       "Maintained accurate and searchable records of vehicle entry/exit for compliance and security audits",
       "Improved visitor vehicle tracking and reduced gate congestion by automating the registration process",
     ],
+    content: ``,
     image: "/images/projects/vehicle-registration-system.png",
+    date: "2024-09-15",
     github: "",
     liveUrl: "",
     featured: false,
   },
   {
     id: "lpr-announcement",
+    category: "Windows Application",
     title: "LPR & Announcement System",
     description:
       "A Windows-based License Plate Recognition and Announcement System using Dahua ANPR cameras, C#, and MySQL to automate vehicle logging and provide real-time text-to-speech announcements.",
@@ -138,14 +210,17 @@ export const projects: Project[] = [
       "Reduced manual effort of guards by automating both logging and audio confirmation processes",
       "Ensured reliable vehicle tracking with centralized storage of all entry/exit events in MySQL",
     ],
+    content: ``,
     image: "/images/projects/lpr-announcement.png",
+    date: "2024-09-15",
     github: "",
     liveUrl: "",
     featured: false,
   },
   {
     id: "idata-label-printer",
-    title: "iData Label Printer (Flutter Plugin)",
+    category: "Flutter Plugin",
+    title: "iData Label Printer",
     description:
       "A custom Flutter plugin for Android that enables seamless Bluetooth connectivity with iData thermal and label printers for on-demand printing.",
     longDescription:
@@ -162,13 +237,16 @@ export const projects: Project[] = [
       "Optimized for enterprise scenarios such as inventory labeling, logistics, and visitor badge printing",
       "Reduced integration complexity by abstracting low-level printer SDK details into simple Flutter APIs",
     ],
+    content: ``,
     image: "/images/projects/iDataLabelPrinter.png",
+    date: "2024-09-15",
     github: "https://github.com/Sathish0225/idata_label_printer",
     liveUrl: "https://pub.dev/packages/idata_label_printer",
     featured: false,
   },
   {
     id: "srm",
+    category: "Web Application",
     title: "SRM (Service Report Management System)",
     description:
       "A Service Report Management System built with CodeIgniter 4, Bootstrap 4, and MySQL, with a companion Flutter app for field technicians to manage service reports on the go.",
@@ -188,13 +266,16 @@ export const projects: Project[] = [
       "Implemented CRUD-based workflows for managing clients, services, and reports",
       "Improved operational efficiency by synchronizing mobile updates with the web system in real time",
     ],
+    content: ``,
     image: "/images/projects/service_order.png",
+    date: "2024-09-15",
     github: "",
     liveUrl: "",
     featured: false,
   },
   {
     id: "inventory-system",
+    category: "Web Application",
     title: "Inventory Management System",
     description:
       "A web-based Inventory Management System built with Core PHP, MySQL, and HTML to track, manage, and update stock efficiently.",
@@ -208,13 +289,16 @@ export const projects: Project[] = [
       "Reduced manual errors and improved accuracy of inventory records",
       "Created a lightweight system suitable for small to medium-sized enterprises",
     ],
+    content: ``,
     image: "/images/projects/inventory_system.png",
+    date: "2024-09-15",
     github: "",
     liveUrl: "",
     featured: false,
   },
   {
     id: "code-editor-io",
+    category: "Web Application",
     title: "Code Editor io",
     description:
       "An online code and markdown editor built with React.js, featuring live preview, GitHub Flavored Markdown (GFM) support, and local auto-save.",
@@ -228,13 +312,16 @@ export const projects: Project[] = [
       "Enabled offline persistence with auto-save using browser Local Storage",
       "Created a lightweight, browser-based alternative to desktop editors for quick prototyping",
     ],
+    content: ``,
     image: "/images/projects/code-editor-io.png",
+    date: "2024-09-15",
     github: "https://github.com/Sathish0225/code-editor",
     liveUrl: "https://code-editor-sigma-one.vercel.app/",
     featured: false,
   },
   {
     id: "shareease",
+    category: "Web Application",
     title: "ShareEase",
     description:
       "ShareEase is a secure and user-friendly file sharing platform designed for easy and efficient exchange of files.",
@@ -255,13 +342,16 @@ export const projects: Project[] = [
       "Implemented scalable storage and retrieval using MongoDB",
       "Enhanced collaboration by allowing quick file exchange between users",
     ],
+    content: ``,
     image: "/images/projects/shareease.png",
+    date: "2024-09-15",
     github: "https://github.com/Sathish0225/shareease",
     liveUrl: "https://shareease.vercel.app/",
     featured: false,
   },
   {
     id: "todo-app",
+    category: "Web Application",
     title: "Todo App",
     description:
       "A simple yet powerful to-do list app to manage tasks, deadlines, and priorities efficiently.",
@@ -274,13 +364,16 @@ export const projects: Project[] = [
       "Simplified collaboration with task lists accessible via the web",
       "Improved productivity for personal and team use",
     ],
+    content: ``,
     image: "/images/projects/todo-list-app.png",
+    date: "2024-09-15",
     github: "https://github.com/Sathish0225/todo-list-app",
     liveUrl: "https://todo-list-app-three-theta.vercel.app/",
     featured: false,
   },
   {
     id: "old-portfolio",
+    category: "Portfolio",
     title: "Old Portfolio",
     description:
       "A professional portfolio website to showcase skills, projects, and achievements.",
@@ -293,13 +386,16 @@ export const projects: Project[] = [
       "Enhanced professional visibility and networking opportunities",
       "Served as a foundation for later upgraded portfolio projects",
     ],
+    content: ``,
     image: "/images/projects/portfolio-old.png",
+    date: "2024-09-15",
     github: "https://github.com/Sathish0225/portfolio-website",
     liveUrl: "",
     featured: false,
   },
   {
     id: "sudoku-solver",
+    category: "Web Application",
     title: "Sudoku Solver",
     description:
       "A web-based Sudoku solver that instantly solves valid puzzles entered by the user.",
@@ -312,13 +408,16 @@ export const projects: Project[] = [
       "Created a clean and responsive UI for user-friendly puzzle input",
       "Helped users solve challenging Sudoku puzzles within seconds",
     ],
+    content: ``,
     image: "/images/projects/sudoku-solver.png",
+    date: "2024-09-15",
     github: "https://github.com/Sathish0225/sudoku-solver",
     liveUrl: "https://sudoku-solver-gilt-eight.vercel.app/",
     featured: false,
   },
   {
     id: "small-workouts",
+    category: "Workouts",
     title: "Small Workouts",
     description:
       "A collection of short coding challenges to strengthen understanding of JavaScript functions.",
@@ -331,7 +430,9 @@ export const projects: Project[] = [
       "Provided a lightweight environment for quick coding practice",
       "Helped in improving problem-solving and algorithmic thinking",
     ],
+    content: ``,
     image: "/images/projects/small-workouts.jpg",
+    date: "2024-09-15",
     github: "https://github.com/Sathish0225/codeExamples",
     liveUrl: "",
     featured: false,

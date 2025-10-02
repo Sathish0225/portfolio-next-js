@@ -46,16 +46,25 @@ export function FeaturedProjects() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.1 * index }}
               >
-                <Card className="h-full flex flex-col overflow-hidden border-2 transition-all hover:border-primary">
+                <Card className="group flex flex-col overflow-hidden border-primary/10 hover:border-primary/30 transition-all duration-300 hover:shadow-md h-full">
                   {project.image && (
-                    <div className="aspect-video overflow-hidden">
+                    <div className="relative overflow-hidden aspect-video w-full">
                       <Image
                         src={project.image}
                         alt={project.title}
-                        className="h-full w-full object-cover transition-transform hover:scale-105"
-                        width={600}
-                        height={400}
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        priority={project.featured}
                       />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                      {/* Status Badge */}
+                      <div className="absolute top-4 left-4">
+                        <Badge variant={"default"} className="text-xs">
+                          {project.category}
+                        </Badge>
+                      </div>
                     </div>
                   )}
                   <CardHeader>

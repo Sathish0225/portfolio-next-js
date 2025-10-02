@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { ArrowLeft, Github, ExternalLink, Tag } from "lucide-react";
+import { ArrowLeft, Github, ExternalLink, Tag, Calendar } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { projects, Project } from "@/data/projects";
+import { Card } from "@/components/ui/card";
 
 export default function ProjectPage() {
   const router = useRouter();
@@ -22,6 +23,91 @@ export default function ProjectPage() {
       router.push("/projects");
     }
   }, [params, router]);
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  const renderContent = () => {
+    const lines = project!.content.split("\n");
+    const elements: JSX.Element[] = [];
+
+    for (let index = 0; index < lines.length; index++) {
+      const line = lines[index];
+
+      if (line.startsWith("# ")) {
+        elements.push(
+          <h1 key={index} className="text-3xl font-bold  first:mt-0">
+            {line.substring(2)}
+          </h1>
+        );
+      } else if (line.startsWith("## ")) {
+        elements.push(
+          <h2 key={index} className="text-2xl font-semibold">
+            {line.substring(3)}
+          </h2>
+        );
+      } else if (line.startsWith("### ")) {
+        elements.push(
+          <h3 key={index} className="text-xl font-semibold">
+            {line.substring(4)}
+          </h3>
+        );
+      } else if (
+        line.startsWith("```javascript") ||
+        line.startsWith("```typescript") ||
+        line.startsWith("```json") ||
+        line.startsWith("```")
+      ) {
+        // collect code block
+        let codeContent = "";
+        index++;
+        while (index < lines.length && !lines[index].startsWith("```")) {
+          codeContent += lines[index] + "\n";
+          index++;
+        }
+        elements.push(
+          <Card
+            key={index}
+            className="bg-muted p-6 font-mono text-sm overflow-x-auto"
+          >
+            <pre className="whitespace-pre-wrap">{codeContent}</pre>
+          </Card>
+        );
+      } else if (line.startsWith("```")) {
+        // skip raw ``` markers
+        continue;
+      } else if (line.trim() === "") {
+        elements.push(<div key={index} className="h-4" />);
+      } else if (line.startsWith("- ")) {
+        elements.push(
+          <li key={index} className="mb-2 ml-5">
+            {line.substring(2)}
+          </li>
+        );
+      } else if (line.trim() === "---") {
+        elements.push(
+          <hr key={index} className="border-t border-muted-foreground/30" />
+        );
+      } else {
+        elements.push(
+          <p key={index} className="mb-2 leading-relaxed text-foreground">
+            {line}
+          </p>
+        );
+      }
+    }
+
+    return (
+      <div className="prose prose-slate max-w-none dark:prose-invert">
+        {elements}
+      </div>
+    );
+  };
 
   if (!project) {
     return (
@@ -94,6 +180,14 @@ export default function ProjectPage() {
 
         {/* Header */}
         <header className="mb-8">
+          <div className="flex flex-wrap items-center gap-4 mb-6 text-sm text-muted-foreground">
+            <div className="flex items-center gap-1">
+              <Calendar className="h-4 w-4" />
+              {formatDate(project.date || new Date().toISOString())}
+            </div>
+            <Badge variant={"secondary"}>{project.category}</Badge>
+          </div>
+
           <h1 className="text-4xl sm:text-5xl font-bold mb-6 leading-tight">
             {project.title}
           </h1>
@@ -133,6 +227,10 @@ export default function ProjectPage() {
               </li>
             ))}
           </ul>
+
+          {project.content && (
+            <div className="mb-12 prose max-w-none">{renderContent()}</div>
+          )}
 
           {project.github || project.liveUrl ? (
             <>
