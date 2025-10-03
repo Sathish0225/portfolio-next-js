@@ -38,7 +38,7 @@ export function Navbar() {
   const [activeSection, setActiveSection] = useState("/");
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const { theme } = useTheme();
+  const { resolvedTheme } = useTheme();
 
   useEffect(() => setMounted(true), []);
 
@@ -120,12 +120,12 @@ export function Navbar() {
 
   // Adjust the backdrop blur and color based on theme
   const isScrolledBgClass =
-    theme === "dark"
+    resolvedTheme === "dark"
       ? "bg-background/30 backdrop-blur-md border-[0.5px] border-white/10 shadow-[0_8px_32px_rgba(255,255,255,0.03)]"
       : "bg-background/40 backdrop-blur-md border-[0.5px] border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.1)]";
 
   const notScrolledBgClass =
-    theme === "dark"
+    resolvedTheme === "dark"
       ? "bg-background/20 backdrop-blur-sm border-[0.5px] border-white/5"
       : "bg-background/20 backdrop-blur-sm border-[0.5px] border-white/10";
 
@@ -162,7 +162,7 @@ export function Navbar() {
                     >
                       <Image
                         src={
-                          (theme ?? "light") === "dark"
+                          resolvedTheme === "dark"
                             ? "/images/sk_white.png"
                             : "/images/sk_black.png"
                         }
@@ -253,7 +253,7 @@ export function Navbar() {
                             >
                               <Image
                                 src={
-                                  (theme ?? "light") === "dark"
+                                  resolvedTheme === "dark"
                                     ? "/images/sk_white.png"
                                     : "/images/sk_black.png"
                                 }

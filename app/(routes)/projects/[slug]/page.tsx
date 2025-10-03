@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { projects, Project } from "@/data/projects";
 import { Card } from "@/components/ui/card";
+import React from "react";
 
 export default function ProjectPage() {
   const router = useRouter();
@@ -37,33 +38,59 @@ export default function ProjectPage() {
     const elements: JSX.Element[] = [];
 
     for (let index = 0; index < lines.length; index++) {
-      const line = lines[index];
+      const line = lines[index].trim();
 
-      if (line.startsWith("# ")) {
+      // Skip empty lines, render spacing
+      if (!line) {
+        elements.push(<div key={index} className="h-2" />);
+        continue;
+      }
+
+      // --- Horizontal Rule
+      if (line === "---") {
         elements.push(
-          <h1 key={index} className="text-3xl font-bold  first:mt-0">
-            {line.substring(2)}
-          </h1>
+          <hr
+            key={index}
+            className="border-t border-muted-foreground/30 my-2"
+          />
         );
-      } else if (line.startsWith("## ")) {
+        continue;
+      }
+
+      // --- Headings
+      const headingMatch = line.match(/^(#{1,6})\s+(.*)/);
+      if (headingMatch) {
+        const level = headingMatch[1].length;
+        const content = headingMatch[2];
         elements.push(
-          <h2 key={index} className="text-2xl font-semibold">
-            {line.substring(3)}
-          </h2>
+          React.createElement(
+            `h${level}`,
+            {
+              key: index,
+              className: `font-bold my-2 ${
+                level === 1 ? "text-3xl" : level === 2 ? "text-2xl" : "text-xl"
+              }`,
+            },
+            content
+          )
         );
-      } else if (line.startsWith("### ")) {
+        continue;
+      }
+
+      // --- Lists
+      if (line.startsWith("- ")) {
         elements.push(
-          <h3 key={index} className="text-xl font-semibold">
-            {line.substring(4)}
-          </h3>
+          <li
+            key={index}
+            className="mb-2 ml-5"
+            dangerouslySetInnerHTML={{ __html: formatLine(line.substring(2)) }}
+          />
         );
-      } else if (
-        line.startsWith("```javascript") ||
-        line.startsWith("```typescript") ||
-        line.startsWith("```json") ||
-        line.startsWith("```")
-      ) {
-        // collect code block
+        continue;
+      }
+
+      // --- Code Blocks
+      if (line.startsWith("```")) {
         let codeContent = "";
         index++;
         while (index < lines.length && !lines[index].startsWith("```")) {
@@ -73,39 +100,152 @@ export default function ProjectPage() {
         elements.push(
           <Card
             key={index}
-            className="bg-muted p-6 font-mono text-sm overflow-x-auto"
+            className="bg-muted p-6 font-mono text-sm overflow-x-auto my-2"
           >
             <pre className="whitespace-pre-wrap">{codeContent}</pre>
           </Card>
         );
-      } else if (line.startsWith("```")) {
-        // skip raw ``` markers
         continue;
-      } else if (line.trim() === "") {
-        elements.push(<div key={index} className="h-4" />);
-      } else if (line.startsWith("- ")) {
-        elements.push(
-          <li key={index} className="mb-2 ml-5">
-            {line.substring(2)}
-          </li>
-        );
-      } else if (line.trim() === "---") {
-        elements.push(
-          <hr key={index} className="border-t border-muted-foreground/30" />
-        );
-      } else {
-        elements.push(
-          <p key={index} className="mb-2 leading-relaxed text-foreground">
-            {line}
-          </p>
-        );
       }
+
+      // --- Images (support multiple images in one line)
+      if (line.includes("![")) {
+        const matches = [...line.matchAll(/!\[(.*?)\]\((.*?)\)/g)];
+        if (matches.length > 0) {
+          elements.push(
+            <div
+              key={index}
+              className={`my-4 grid gap-4 ${
+                matches.length > 1
+                  ? `grid-cols-${Math.min(matches.length, 3)}`
+                  : "grid-cols-1"
+              }`}
+            >
+              {matches.map((match, i) => {
+                const alt = match[1];
+                const src = match[2];
+                return (
+                  <div
+                    key={`${index}-${i}`}
+                    className="flex flex-col items-center"
+                  >
+                    <Image
+                      src={src}
+                      alt={alt}
+                      width={400}
+                      height={400}
+                      className="rounded-xl shadow-md w-full h-auto"
+                    />
+                    {alt && (
+                      <p className="mt-2 text-center text-sm text-muted-foreground">
+                        {alt}
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          );
+          continue;
+        }
+      }
+
+      // --- Tables
+      if (line.includes("|")) {
+        const rows: string[][] = [];
+        let tableIndex = index;
+
+        // collect consecutive lines that have |
+        while (tableIndex < lines.length && lines[tableIndex].includes("|")) {
+          const row = lines[tableIndex]
+            .split("|")
+            .map((cell) => cell.trim())
+            .filter((cell) => cell !== "");
+          rows.push(row);
+          tableIndex++;
+        }
+
+        // push table element
+        elements.push(
+          <table
+            key={index}
+            className="w-full table-auto border border-muted-foreground mb-4"
+          >
+            <thead className="bg-muted text-left">
+              <tr>
+                {rows[0].map((cell, i) => (
+                  <th
+                    key={i}
+                    className="border border-muted-foreground px-4 py-2 font-semibold"
+                    dangerouslySetInnerHTML={{ __html: formatLine(cell) }}
+                  />
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.slice(1).map((row, rIndex) => (
+                <tr key={rIndex} className="hover:bg-muted/30">
+                  {row.map((cell, cIndex) => (
+                    <td
+                      key={cIndex}
+                      className="border border-muted-foreground px-4 py-2"
+                      dangerouslySetInnerHTML={{ __html: formatLine(cell) }}
+                    />
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        );
+
+        // skip table lines in main loop
+        index = tableIndex - 1;
+        continue;
+      }
+
+      // --- Inline formatting: bold, italic, bold+italic
+      elements.push(
+        <p
+          key={index}
+          className="mb-2 leading-relaxed text-foreground"
+          dangerouslySetInnerHTML={{ __html: formatLine(line) }}
+        />
+      );
     }
 
     return (
       <div className="prose prose-slate max-w-none dark:prose-invert">
         {elements}
       </div>
+    );
+  };
+
+  const formatLine = (line: string) => {
+    if (!line) return "";
+
+    return (
+      line
+        // inline code first
+        .replace(
+          /`([^`]+)`/g,
+          (_match, p1) =>
+            `<code class="bg-muted px-1 py-0.5 rounded text-sm font-mono">${p1}</code>`
+        )
+        // bold + italic
+        .replace(/\*\*\*(.*?)\*\*\*/g, "<strong><em>$1</em></strong>")
+        // bold
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+        // italic
+        .replace(/\*(.*?)\*/g, "<em>$1</em>")
+        // links
+        .replace(
+          /\[([\s\S]*?)\]\(([^)]+)\)/g,
+          (_match, label, url) =>
+            `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">${label.replace(
+              /\n/g,
+              " "
+            )}</a>`
+        )
     );
   };
 
@@ -126,7 +266,7 @@ export default function ProjectPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <Button
             variant="ghost"
-            onClick={() => router.back()}
+            onClick={() => router.push("/projects")}
             className="flex items-center gap-2"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -212,7 +352,7 @@ export default function ProjectPage() {
         </header>
 
         {/* Project Content */}
-        <div className="mb-12 prose max-w-none">
+        <div className="mb-6 prose max-w-none">
           <h2 className="text-2xl font-bold mb-4">Overview</h2>
           <p className="mb-6">
             {project.longDescription || project.description}
@@ -228,9 +368,7 @@ export default function ProjectPage() {
             ))}
           </ul>
 
-          {project.content && (
-            <div className="mb-12 prose max-w-none">{renderContent()}</div>
-          )}
+          {project.content && <div className="mb-6">{renderContent()}</div>}
 
           {project.github || project.liveUrl ? (
             <>

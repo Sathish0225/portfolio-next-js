@@ -37,7 +37,7 @@ export function FeaturedProjects() {
               Check out some of my recent work
             </p>
           </motion.div>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 w-full">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 w-full">
             {featuredProjects.map((project, index) => (
               <motion.div
                 key={project.id}
