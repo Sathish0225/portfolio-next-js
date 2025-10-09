@@ -16,6 +16,84 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: "kyvra-ai-chatbot",
+    category: "Web Application",
+    title: "Kyvra Chatbot AI",
+    description:
+      "Kyvra Chatbot AI is an intelligent conversational assistant powered by Google and OpenAI models. It delivers natural, dynamic, and visually engaging AI-driven interactions through a modern web experience.",
+    longDescription:
+      "Kyvra Chatbot AI is a next-generation conversational assistant built with Next.js 15 and React 19, combining the power of Google Gemini and OpenAI models for rich, human-like dialogue. Designed with a sleek interface using TailwindCSS, ShadCN, and Framer Motion, the chatbot provides real-time responses, markdown-rendered outputs, and beautiful AI-powered data visualizations. The platform supports dark/light mode, 3D animated backgrounds via Three.js, and interactive UI elements powered by React Hook Form and Zod for seamless user experiences. Kyvra redefines web-based AI interaction by blending performance, design, and intelligence into one unified application.",
+    technologies: [
+      "Next.js 15",
+      "React 19",
+      "TypeScript",
+      "TailwindCSS 4",
+      "Framer Motion",
+      "ShadCN/UI",
+      "@google/genai",
+      "OpenAI API",
+    ],
+    achievements: [
+      "Integrated dual AI engines (Google Gemini & OpenAI) for intelligent and context-aware chatbot interactions",
+      "Built a fully responsive and animated UI using TailwindCSS, Framer Motion, and ShadCN components",
+      "Implemented real-time markdown rendering with syntax highlighting for dynamic AI-generated content",
+      "Added AI-powered data visualization using Recharts for graphical insights within conversations",
+      "Enhanced user experience with dark/light theme support and immersive 3D visuals powered by Three.js",
+      "Optimized performance with Next.js 15 and Turbopack for ultra-fast development and rendering",
+      "Implemented modern notification and validation systems using Sonner, React Hot Toast, and Zod",
+    ],
+    content: `
+    # 🤖 Kyvra AI Chatbot
+
+An intelligent, theme-adaptive AI chatbot built with **Next.js 15**, **React 19**, and **TailwindCSS 4** — powered by **Google Gemini** and **OpenAI GPT** APIs.
+
+![Kyvra AI Screenshot](/images/projects/kyvra/kyvra-preview1.png) ![Kyvra AI Screenshot](/images/projects/kyvra/kyvra-preview2.png)
+
+---
+
+## 🚀 Features
+
+- 💬 **Conversational AI** — Uses \`@google/genai\` and \`openai\` for advanced AI responses  
+- 🎨 **Modern UI** — Built with TailwindCSS, Framer Motion, and ShadCN components  
+- 🌗 **Dark/Light Theme** — Seamless theme switching using \`next-themes\`  
+- 📦 **Fast Rendering** — Powered by \`Next.js 15\` with \`--turbopack\` for lightning-fast builds  
+- 📜 **Markdown Support** — AI responses rendered beautifully using \`react-markdown\` + \`remark-gfm\`  
+- 📊 **Visualization Ready** — Integrated with \`recharts\` for AI-powered data visualization  
+- 🧩 **3D Experience** — \`three.js\` + \`@react-three/fiber\` for immersive 3D chatbot backgrounds or animations  
+- 🧠 **Form Validation** — Managed with \`react-hook-form\` and \`zod\`  
+- 🔔 **Notifications** — Using \`sonner\` and \`react-hot-toast\` for modern feedback UI
+
+---
+
+## 🏗️ Tech Stack
+
+| Category | Libraries / Frameworks |
+|-----------|------------------------|
+| **Frontend** | Next.js 15, React 19, TypeScript |
+| **Styling** | TailwindCSS 4, clsx, tailwind-merge |
+| **Animation** | Framer Motion, tw-animate-css |
+| **AI & NLP** | @google/genai, openai |
+| **Markdown Rendering** | react-markdown, remark-gfm |
+| **UI Components** | shadcn/ui, cmdk, vaul |
+| **Forms** | react-hook-form, zod |
+| **Charts** | recharts |
+| **3D Graphics** | three, @react-three/fiber, @react-three/drei |
+| **Themes** | next-themes |
+| **Linting** | ESLint, eslint-config-next |
+
+---
+
+## 🧾 License
+
+MIT License © 2025 Sathishkumar Ranganathan
+    `,
+    image: "/images/projects/kyvra/kyvra-preview1.png",
+    date: "2025-10-09",
+    github: "https://github.com/Sathish0225/kyvra-chatbot-ai",
+    liveUrl: "https://kyvra-chatbot-ai.vercel.app/",
+    featured: true,
+  },
+  {
     id: "iSecure360",
     category: "Web Application",
     title: "iSecure360",
