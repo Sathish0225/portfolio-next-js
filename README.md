@@ -2,7 +2,7 @@
 
 A modern, responsive portfolio website built with Next.js 14, Tailwind CSS, and Framer Motion featuring a stunning dark mode with animated stars background.
 
-![Portfolio Preview](/images/og-image.jpg)
+![Portfolio Preview](./public/images/og-image.jpg)
 
 Live Website: [https://mithran.dev](https://www.mithran.dev/)
 
