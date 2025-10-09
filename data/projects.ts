@@ -68,7 +68,6 @@ An intelligent, theme-adaptive AI chatbot built with **Next.js 15**, **React 19*
 ## 🏗️ Tech Stack
 
 | Category | Libraries / Frameworks |
-|-----------|------------------------|
 | **Frontend** | Next.js 15, React 19, TypeScript |
 | **Styling** | TailwindCSS 4, clsx, tailwind-merge |
 | **Animation** | Framer Motion, tw-animate-css |
