@@ -16,6 +16,125 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: "resuvy-resume-builder",
+    category: "Web Application",
+    title: "Resuvy Resume Builder",
+    description:
+      "Create a modern, professional resume in minutes, Customize templates, highlight your skills, and get a polished PDF ready to impress employers.",
+    longDescription:
+      "Resuvy is a modern, intuitive, and user-friendly web application designed to empower you to create professional and impactful resumes (CVs) with ease. Whether you're just starting your career or looking to make a change, Resuvy provides the tools and flexibility you need to showcase your skills and experience effectively.",
+    technologies: [
+      "Next.js",
+      "React 19",
+      "TypeScript",
+      "TailwindCSS 4",
+      "ShadCN/UI",
+    ],
+    achievements: [
+      "Developed an intuitive, real-time resume builder enabling users to create professional CVs effortlessly.",
+      "Built a drag-and-drop customizable layout with editable sections for maximum personalization.",
+      "Implemented live preview and instant updates, allowing users to visualize changes in real time.",
+      "Added multi-format export options: PDF, HTML, and JSON for sharing or hosting resumes.",
+      "Designed a fully responsive and modern UI using TailwindCSS, shadcn/ui components, and Lucide icons.",
+      "Optimized performance and scalability using Next.js with Turbopack for fast rendering.",
+    ],
+    content: `
+    # Resuvy - Create Resumes
+
+**Resuvy** is a modern, intuitive, and user-friendly web application designed to empower you to create professional and **impactful** resumes (CVs) with ease. Whether you're just starting your career or looking to make a change, Resuvy provides the tools and flexibility you need to showcase your skills and experience effectively.
+
+![Resuvy Screenshot](/images/projects/resuvy/preview1.png) ![Resuvy Screenshot](/images/projects/resuvy/preview2.png)
+
+---
+
+## 🚀 Features
+
+### Intuitive Interface
+
+- **Real-Time Preview** — Instantly visualize changes.  
+- **Drag-and-Drop Sections** — Customize your CV layout effortlessly.
+- **Editable Section Titles** — Personalize headings to match your unique style.
+
+### Comprehensive Configuration
+
+- **Basic Information** — Name, role, location, contact details, and social links.  
+- **Professional Summary** — Craft compelling professional summaries.
+- **Experience & Education** — Clearly structure professional history and educational background.
+- **Skills & Projects** — Highlight expertise and showcase impactful projects.
+
+### Import & Export Options
+
+- **JSON Import/Export** — Quickly import or export your CV configuration.
+- **HTML Export** — Self-contained HTML file ready to host or share.
+- **PDF Export** — Simple, high-quality print or PDF generation.
+
+---
+
+## 🏗️ Tech Stack
+
+| Category | Libraries / Frameworks |
+|-----------|------------------------|
+| **Frontend** | Next.js 15, React 19, TypeScript |
+| **Styling** | TailwindCSS 4, Lucide Icons |
+| **UI Components** | shadcn/ui|
+| **Utilities** | Date-fns, UUID, clsx, Sonner |
+| **Themes** | next-themes |
+| **Linting** | ESLint, eslint-config-next |
+
+---
+
+## ⚙️ Installation
+
+\`\`\`bash
+# 1️⃣ Clone the repository
+git clone https://github.com/Sathish0225/resuvy-resume-builder.git
+cd resuvy-resume-builder
+
+# 2️⃣ Install dependencies
+npm install
+
+# 3️⃣ Run the development server
+npm run dev
+
+# 4️⃣ Open your browser
+# Navigate to: http://localhost:3000
+\`\`\`
+
+## 🧰 Scripts
+
+| Command | Description |
+|---------|-------------|
+| \`npm run dev\` | Start the dev server with Turbopack |
+| \`npm run build\` | Build for production |
+| \`npm start\` | Start production server |
+| \`npm run lint\` | Run ESLint checks |
+
+## 📁 Folder Structure
+
+\`\`\`csharp
+resuvy-resume-builder/
+├── app/                    # Next.js app router
+├── components/             # Reusable UI components
+├── hooks/                  # Custom React hooks
+├── lib/                    # API clients, utils
+├── public/                 # Static assets
+├── styles/                 # TailwindCSS styles
+├── .env.local              # API keys (ignored in git)
+├── package.json
+└── README.md
+\`\`\`
+
+## 🧾 License
+
+MIT License © 2025 Sathishkumar Ranganathan
+    `,
+    image: "/images/projects/resuvy/preview1.png",
+    date: "2025-10-09",
+    github: "https://github.com/Sathish0225/resuvy-resume-builder",
+    liveUrl: "https://resuvy-resume-builder.vercel.app/",
+    featured: false,
+  },
+  {
     id: "kyvra-ai-chatbot",
     category: "Web Application",
     title: "Kyvra Chatbot AI",
