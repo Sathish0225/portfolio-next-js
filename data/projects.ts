@@ -73,7 +73,6 @@ export const projects: Project[] = [
 ## 🏗️ Tech Stack
 
 | Category | Libraries / Frameworks |
-|-----------|------------------------|
 | **Frontend** | Next.js 15, React 19, TypeScript |
 | **Styling** | TailwindCSS 4, Lucide Icons |
 | **UI Components** | shadcn/ui|
@@ -103,7 +102,6 @@ npm run dev
 ## 🧰 Scripts
 
 | Command | Description |
-|---------|-------------|
 | \`npm run dev\` | Start the dev server with Turbopack |
 | \`npm run build\` | Build for production |
 | \`npm start\` | Start production server |

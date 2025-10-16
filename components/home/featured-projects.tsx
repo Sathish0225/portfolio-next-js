@@ -95,38 +95,40 @@ export function FeaturedProjects() {
                         ))}
                     </ul>
                   </CardContent>
-                  <CardFooter className="flex gap-2">
+                  <CardFooter className="flex flex-row w-full justify-between gap-2">
                     <Button asChild variant="default" size="sm">
                       <Link href={`/projects/${project.id}`}>
                         View Details
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>
-                    <div className="flex-1"></div>
-                    {project.github && (
-                      <Button asChild variant="ghost" size="icon">
-                        <a
-                          href={project.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label="GitHub"
-                        >
-                          <Github className="h-4 w-4" />
-                        </a>
-                      </Button>
-                    )}
-                    {project.liveUrl && (
-                      <Button asChild variant="ghost" size="icon">
-                        <a
-                          href={project.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label="Live Demo"
-                        >
-                          <ExternalLink className="h-4 w-4" />
-                        </a>
-                      </Button>
-                    )}
+
+                    <div className="flex flex-row gap-2">
+                      {project.github && (
+                        <Button asChild variant="ghost" size="icon">
+                          <a
+                            href={project.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="GitHub"
+                          >
+                            <Github className="h-4 w-4" />
+                          </a>
+                        </Button>
+                      )}
+                      {project.liveUrl && (
+                        <Button asChild variant="ghost" size="icon">
+                          <a
+                            href={project.liveUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Live Demo"
+                          >
+                            <ExternalLink className="h-4 w-4" />
+                          </a>
+                        </Button>
+                      )}
+                    </div>
                   </CardFooter>
                 </Card>
               </motion.div>
