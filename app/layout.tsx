@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Sathishkumar Ranganathan | Portfolio",
   description:
     "Software Developer passionate about building scalable web apps and intelligent systems.",
-  metadataBase: new URL("https://mithran.dev"),
+  metadataBase: new URL("https://skportfolio.dev"),
 
   // Basic metadata
   applicationName: "Sathishkumar Ranganathan Portfolio",
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
   openGraph: {
     type: "website",
-    url: "https://mithran.dev",
+    url: "https://skportfolio.dev",
     title: "Sathishkumar Ranganathan | Full Stack Developer",
     description:
       "Software Developer passionate about building scalable web apps and intelligent systems.",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   },
 
   alternates: {
-    canonical: "https://mithran.dev",
+    canonical: "https://skportfolio.dev",
   },
 };
 

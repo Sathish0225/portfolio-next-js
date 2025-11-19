@@ -4,7 +4,7 @@ A modern, responsive portfolio website built with Next.js 14, Tailwind CSS, and 
 
 ![Portfolio Preview](./public/images/og-image.jpg)
 
-Live Website: [https://mithran.dev](https://www.mithran.dev/)
+Live Website: [https://skportfolio.dev](https://www.skportfolio.dev/)
 
 ## Table of Contents
 
