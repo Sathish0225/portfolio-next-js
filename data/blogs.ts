@@ -22,6 +22,448 @@ export const generateSlug = (title: string): string => {
 
 export const blogs: Blog[] = [
   {
+    id: "setting-up-full-development-on-synology",
+    title:
+      "Setting Up a Full Development Environment with Docker, CodeServer, MySQL, and Flutter",
+    excerpt:
+      "n this guide, I’ll walk you through how to set up a full-featured development environment using Docker. This setup includes Ubuntu 22.04, CodeServer (VS Code in the browser), MySQL, PHP, Composer, and Flutter — all running inside a single container.",
+    content: `# Setting Up a Full Development Environment with Docker, CodeServer, MySQL, and Flutter
+
+In this guide, I’ll walk you through how to set up a full-featured development environment using Docker. This setup includes Ubuntu 22.04, CodeServer (VS Code in the browser), MySQL, PHP, Composer, and Flutter — all running inside a single container.
+
+## Why This Setup?
+
+Developers often face challenges like:
+
+- Installing multiple tools and dependencies on their machine.
+- Conflicts between PHP, Node, MySQL, or Flutter versions.
+- Wanting to access a fully configured IDE from any device.
+
+This Docker setup solves all of that by running a **portable development container**. You can connect to CodeServer via the browser, use MySQL, and even develop Flutter apps without polluting your host system.
+
+## Docker Compose File
+
+Here’s the Docker Compose file that orchestrates the container:
+
+\`\`\`yaml
+version: "3.9"
+
+services:
+  dev-container:
+    build: ./
+    container_name: dev-container
+    environment:
+      TZ: Asia/Singapore
+      MYSQL_ROOT_PASSWORD: ChangeRootPassword123!
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: ChangePassword123!
+      CODESERVER_PASSWORD: ChangePassword123!
+    ports:
+      - "8443:8443"   # CodeServer
+      - "3306:3306"   # MySQL
+    volumes:
+      - /volume1/drive1/dev:/home/dev/projects
+      - codeserver-data:/home/dev/.local/share/code-server
+      - mysql-data:/var/lib/mysql
+    restart: unless-stopped
+
+volumes:
+  codeserver-data:
+  mysql-data:
+\`\`\`
+
+### Key Points:
+
+- Environment Variables: Set timezone, MySQL credentials, and CodeServer password.
+- Ports: Expose 8443 for CodeServer and 3306 for MySQL.
+- Volumes: Persist project files, CodeServer settings, and MySQL data.
+- Restart Policy: Keeps your dev container running unless explicitly stopped.
+
+## Dockerfile
+
+The Dockerfile sets up the environment inside the container:
+
+\`\`\`dockerfile
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Asia/Singapore
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    unzip \
+    zip \
+    sudo \
+    software-properties-common \
+    build-essential \
+    php-cli \
+    php-mysql \
+    mariadb-server \
+    composer \
+    openjdk-11-jdk \
+    bash \
+    locales \
+    && locale-gen en_US.UTF-8 \
+    && apt-get clean
+
+# Install Flutter
+RUN git clone https://github.com/flutter/flutter.git /opt/flutter -b stable
+ENV PATH="$PATH:/opt/flutter/bin:/opt/flutter/bin/cache/dart-sdk/bin"
+
+# Install CodeServer
+RUN curl -fsSL https://code-server.dev/install.sh | sh
+
+# Create dev user
+RUN useradd -ms /bin/bash dev && echo "dev:devpassword" | chpasswd && adduser dev sudo
+
+# Set working directory
+WORKDIR /home/dev
+
+# Expose ports
+EXPOSE 8443 3306
+
+# Volumes
+VOLUME ["/home/dev/projects", "/home/dev/.local/share/code-server", "/var/lib/mysql"]
+
+# Start MySQL and launch CodeServer
+CMD bash -c "\
+    service mysql start && \
+    sudo -u dev code-server --bind-addr 0.0.0.0:8443 --auth password /home/dev/projects"
+\`\`\`
+
+### Key Points:
+
+- **Base Image:** Ubuntu 22.04 for stability and compatibility.
+- **Installed Tools:**
+  - \`PHP\`, \`Composer\` for backend development.
+  - \`MariaDB\` (MySQL) for database.
+  - \`Flutter\` for mobile/web development.
+  - \`Java\` for Flutter or Android builds.
+- **CodeServer:** Enables VS Code in the browser.
+- **Volumes:** Ensure your code, settings, and database persist even if the container is destroyed.
+- **User:** Created a \`dev\` user to avoid running everything as root.
+- **CMD:** Starts MySQL and launches CodeServer as the \`dev\` user.
+
+## Running the Development Environment
+
+**Build the container:**
+
+\`\`\`bash
+docker-compose build
+\`\`\`
+
+**Start the container:**
+
+\`\`\`bash
+docker-compose up -d
+\`\`\`
+
+**Access CodeServer:**
+
+\`\`\`bash
+https://localhost:8443
+\`\`\`
+
+Use the password from CODESERVER_PASSWORD environment variable (ChangePassword123! in this case).
+
+**Connect to MySQL:**
+
+\`\`\`bash
+mysql -h 127.0.0.1 -P 3306 -u synouser -p
+\`\`\`
+
+Password is \`ChangePassword123!\`.
+
+## Benefits of This Setup
+
+- Fully portable: can run on any machine with Docker.
+- Pre-installed tools for PHP, Flutter, MySQL, and Java.
+- CodeServer allows remote coding from any device.
+- Data persistence via Docker volumes.
+
+## Conclusion
+
+With this Docker-based development environment, you can streamline your workflow, avoid local machine dependency conflicts, and start coding immediately in a fully configured environment. Whether you’re building web applications with PHP, managing databases with MySQL, or creating mobile apps with Flutter, this setup provides a **portable, consistent, and easy-to-maintain workspace**.
+
+By leveraging Docker, CodeServer, and persistent volumes, your projects, IDE settings, and databases remain safe and accessible across sessions and devices. This approach is perfect for solo developers, teams, or anyone who wants a reliable, all-in-one development environment without cluttering their host system.`,
+    date: "2025-11-29",
+    readTime: "15 min read",
+    tags: ["Synology NAS", "Docker", "Code-Server", "PHP", "Flutter"],
+    image: "/images/blogs/dev-environment/docker-dev-environment.png",
+    published: true,
+    featured: false,
+  },
+  {
+    id: "running-multiple-laravel-apps-on-synology",
+    title: "Running Multiple Laravel Apps on Synology NAS with Docker",
+    excerpt:
+      "Docker makes running multiple applications on the same system simple and conflict-free. In this guide, we’ll walk through setting up multiple Laravel applications on a Synology NAS using Docker Compose with PHP-FPM, Nginx, and MySQL. We’ll cover everything from folder setup to common permission fixes.",
+    content: `# Running Multiple Laravel Apps on Synology NAS with Docker
+
+Docker makes running multiple applications on the same system simple and conflict-free. In this guide, we’ll walk through setting up multiple Laravel applications on a Synology NAS using Docker Compose with PHP-FPM, Nginx, and MySQL. We’ll cover everything from folder setup to common permission fixes.
+
+## Prerequisites
+
+Before starting, ensure you have:
+
+- A Synology NAS with Docker installed via the Package Center
+- SSH access to your NAS (optional, but recommended)
+- Basic knowledge of Laravel and Docker
+- A Laravel project, or the ability to create one using Composer
+
+## Folder Structure
+
+Organize your Laravel apps on the NAS to keep them isolated:
+
+\`\`\`bash
+/volume1/docker/laravel_app1/
+    app/          # Laravel project files
+    docker-compose.yml
+    nginx.conf
+
+/volume1/docker/laravel_app2/
+    app/
+    docker-compose.yml
+    nginx.conf
+\`\`\`
+
+Each app should remain isolated to avoid port and database conflicts.
+
+## Docker Compose Setup
+
+Here’s an example \`docker-compose.yml\` for App1:
+
+\`\`\`yaml
+version: '3.8'
+
+services:
+  php:
+    image: php:8.2-fpm
+    container_name: laravel_app1_php
+    working_dir: /var/www
+    volumes:
+      - ./app:/var/www
+    networks:
+      - laravel
+
+  web:
+    image: nginx:latest
+    container_name: laravel_app1_nginx
+    ports:
+      - "8081:80"
+    volumes:
+      - ./app:/var/www
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+    networks:
+      - laravel
+
+  db:
+    image: mysql:8.0
+    container_name: laravel_app1_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: laravel_app1
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: secret
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data_app1:/var/lib/mysql
+    networks:
+      - laravel
+
+networks:
+  laravel:
+
+volumes:
+  db_data_app1:
+\`\`\`
+
+Make sure each app uses unique ports to prevent conflicts.
+
+## Nginx Configuration
+
+Here’s an example \`nginx.conf\` for App1:
+
+\`\`\`nginx
+server {
+    listen 80;
+    server_name localhost;
+
+    root /var/www/public;
+    index index.php index.html;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass php:9000; # Must match the PHP service name
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+}
+\`\`\`
+
+## Installing Composer
+
+Laravel requires Composer to manage dependencies. You have two main options:
+
+### Option 1: Install Composer manually inside the PHP container
+
+Enter the PHP container:
+
+\`\`\`bash
+sudo docker exec -it laravel_app1_php bash
+\`\`\`
+
+Download and install Composer:
+
+\`\`\`bash
+# Download installer
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+
+# Verify hash (optional but recommended)
+php -r "if (hash_file('sha384', 'composer-setup.php') === file_get_contents('https://composer.github.io/installer.sig')) { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+
+# Install globally
+php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+
+# Remove installer
+php -r "unlink('composer-setup.php');"
+\`\`\`
+
+Verify installation:
+
+\`\`\`bash
+composer --version
+\`\`\`
+
+Now you can create a Laravel project:
+
+\`\`\`bash
+composer create-project laravel/laravel .
+\`\`\`
+
+### Option 2 (Recommended): Use a PHP image with Composer pre-installed
+
+Instead of installing Composer manually every time, you can use the official Composer Docker image or build a custom PHP image:
+
+Example Dockerfile for Laravel:
+
+\`\`\`dockerfile
+FROM php:8.2-fpm
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git unzip libzip-dev zip \
+    && docker-php-ext-install pdo_mysql
+
+# Install Composer from official image
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+\`\`\`
+
+Build this image and use it in your docker-compose.yml:
+
+\`\`\`yaml
+php:
+  build: .
+  container_name: laravel_app1_php
+  working_dir: /var/www
+  volumes:
+    - ./app:/var/www
+  networks:
+    - laravel
+\`\`\`
+
+Using a prebuilt Composer image simplifies setup and keeps your containers clean.
+
+## Creating the Laravel Project
+
+If the \`app/\` folder is empty, you have two options:
+
+### Option 1: Create Laravel project directly on the NAS via the PHP container
+
+\`\`\`bash
+sudo docker exec -it laravel_app1_php bash
+
+# Install dependencies if needed
+apt-get update
+apt-get install -y unzip zip git
+docker-php-ext-install zip
+
+# Create Laravel project
+composer create-project laravel/laravel .
+
+# Fix permissions
+chmod -R 775 storage bootstrap/cache
+chown -R www-data:www-data storage bootstrap/cache
+exit
+\`\`\`
+
+### Option 2: Copy an existing Laravel project into the \`app/\` folder.
+
+Running the Apps
+
+Start your containers:
+
+\`\`\`bash
+sudo docker-compose up -d
+\`\`\`
+
+- **App1:** http://<NAS-IP>:8081
+- **App2:** http://<NAS-IP>:8082
+
+Check logs for troubleshooting:
+
+\`\`\`bash
+sudo docker logs -f laravel_app1_nginx
+\`\`\`
+
+## Database Considerations
+
+- **SQLite:** Works, but ensure write permissions on \`database/database.sqlite\`.
+- **MySQL (recommended):** Easier for multiple apps. Update \`.env\`:
+
+\`\`\`env
+DB_CONNECTION=mysql
+DB_HOST=db
+DB_PORT=3306
+DB_DATABASE=laravel_app1
+DB_USERNAME=laravel
+DB_PASSWORD=secret
+\`\`\`
+
+## Troubleshooting Common Issues
+
+- **“File not found”** → Nginx root might be incorrect (\`/var/www/public\`) or the \`app/\` folder is empty.
+- **Composer errors** → Ensure \`zip\`, \`unzip\`, and \`git\` are installed in the PHP container.
+- **SQLite readonly database** → Fix folder/file permissions or switch to MySQL.
+- **Docker permission denied** → Use \`sudo\` for Docker commands on Synology.
+
+## Tips
+
+- Use **Nginx Proxy Manager** on Synology to access apps via friendly URLs (\`app1.local\`, \`app2.local\`) instead of ports.
+- Ensure each app has **unique ports** for both the web server and database.
+- Set proper folder permissions for Laravel’s \`storage\` and \`bootstrap/cache\` directories.
+
+## Conclusion
+
+With Docker on Synology NAS, running multiple Laravel apps locally is straightforward. Each app is isolated, preventing port or database conflicts, and your environment is ready for further extensions like Redis, queues, or worker containers.`,
+    date: "2025-11-28",
+    readTime: "10 min read",
+    tags: ["Synology NAS", "Docker", "Laravel"],
+    image: "/images/blogs/docker-images/docker-on-synology.png",
+    published: true,
+    featured: false,
+  },
+  {
     id: "building-scalable-react-applications",
     title: "Building Scalable React Applications with Modern Architecture",
     excerpt:
