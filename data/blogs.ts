@@ -26,8 +26,8 @@ export const blogs: Blog[] = [
     title:
       "Setting Up a Full Development Environment with Docker, CodeServer, MySQL, and Flutter",
     excerpt:
-      "n this guide, I’ll walk you through how to set up a full-featured development environment using Docker. This setup includes Ubuntu 22.04, CodeServer (VS Code in the browser), MySQL, PHP, Composer, and Flutter — all running inside a single container.",
-    content: `# Setting Up a Full Development Environment with Docker, CodeServer, MySQL, and Flutter
+      "In this guide, I’ll walk you through how to set up a full-featured development environment using Docker. This setup includes Ubuntu 22.04, CodeServer (VS Code in the browser), MySQL, PHP, Composer, and Flutter — all running inside a single container.",
+    content: `# Full Development Environment with Docker, CodeServer, MySQL, and Flutter
 
 In this guide, I’ll walk you through how to set up a full-featured development environment using Docker. This setup includes Ubuntu 22.04, CodeServer (VS Code in the browser), MySQL, PHP, Composer, and Flutter — all running inside a single container.
 
@@ -54,17 +54,27 @@ services:
     container_name: dev-container
     environment:
       TZ: Asia/Singapore
-      MYSQL_ROOT_PASSWORD: ChangeRootPassword123!
-      MYSQL_DATABASE: mydb
-      MYSQL_USER: myuser
-      MYSQL_PASSWORD: ChangePassword123!
+      DEV_PASSWORD: ChangeDevPassword123!
       CODESERVER_PASSWORD: ChangePassword123!
     ports:
-      - "8443:8443"   # CodeServer
-      - "3306:3306"   # MySQL
+      - "8443:8443"
     volumes:
-      - /volume1/drive1/dev:/home/dev/projects
+      - /volume1/Kumar/Development:/home/dev/projects
       - codeserver-data:/home/dev/.local/share/code-server
+    restart: unless-stopped
+
+  db:
+    image: mariadb:10.11
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: ChangeRootPassword123!
+      MYSQL_DATABASE: synodb
+      MYSQL_USER: synouser
+      MYSQL_PASSWORD: ChangePassword123!
+      TZ: Asia/Singapore
+    ports:
+      - "3306:3306"
+    volumes:
       - mysql-data:/var/lib/mysql
     restart: unless-stopped
 
@@ -85,7 +95,7 @@ volumes:
 The Dockerfile sets up the environment inside the container:
 
 \`\`\`dockerfile
-FROM ubuntu:22.04
+FROM ubuntu:latest
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Singapore
@@ -101,7 +111,6 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     php-cli \
     php-mysql \
-    mariadb-server \
     composer \
     openjdk-11-jdk \
     bash \
@@ -117,21 +126,53 @@ ENV PATH="$PATH:/opt/flutter/bin:/opt/flutter/bin/cache/dart-sdk/bin"
 RUN curl -fsSL https://code-server.dev/install.sh | sh
 
 # Create dev user
-RUN useradd -ms /bin/bash dev && echo "dev:devpassword" | chpasswd && adduser dev sudo
+RUN useradd -ms /bin/bash dev && adduser dev sudo
 
 # Set working directory
 WORKDIR /home/dev
 
-# Expose ports
-EXPOSE 8443 3306
+# ADD ENTRYPOINT SCRIPT
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Expose CodeServer port
+EXPOSE 8443
 
 # Volumes
-VOLUME ["/home/dev/projects", "/home/dev/.local/share/code-server", "/var/lib/mysql"]
+VOLUME ["/home/dev/projects", "/home/dev/.local/share/code-server"]
 
-# Start MySQL and launch CodeServer
-CMD bash -c "\
-    service mysql start && \
-    sudo -u dev code-server --bind-addr 0.0.0.0:8443 --auth password /home/dev/projects"
+ENTRYPOINT ["/entrypoint.sh"]
+
+# Start CodeServer as dev user
+CMD ["sudo", "-u", "dev", "code-server", "--bind-addr", "0.0.0.0:8443", "/home/dev/projects"]
+\`\`\`
+
+## Entrypoint
+
+The Entrypoint sets up the password for code-server inside the container:
+
+\`\`\`bash
+#!/bin/bash
+set -e
+
+# 1 Set dev password from environment variable
+if [ -n "$DEV_PASSWORD" ]; then
+    echo "dev:\${DEV_PASSWORD}" | chpasswd
+fi
+
+# 2 Generate Code-Server config.yaml
+mkdir -p /home/dev/.config/code-server
+cat <<EOF > /home/dev/.config/code-server/config.yaml
+bind-addr: 0.0.0.0:8443
+auth: password
+password: \${CODESERVER_PASSWORD}
+cert: false
+EOF
+chown -R dev:dev /home/dev/.config
+
+# 3 Run Code-Server
+exec "$@"
+
 \`\`\`
 
 ### Key Points:
@@ -202,8 +243,6 @@ By leveraging Docker, CodeServer, and persistent volumes, your projects, IDE set
     excerpt:
       "Docker makes running multiple applications on the same system simple and conflict-free. In this guide, we’ll walk through setting up multiple Laravel applications on a Synology NAS using Docker Compose with PHP-FPM, Nginx, and MySQL. We’ll cover everything from folder setup to common permission fixes.",
     content: `# Running Multiple Laravel Apps on Synology NAS with Docker
-
-Docker makes running multiple applications on the same system simple and conflict-free. In this guide, we’ll walk through setting up multiple Laravel applications on a Synology NAS using Docker Compose with PHP-FPM, Nginx, and MySQL. We’ll cover everything from folder setup to common permission fixes.
 
 ## Prerequisites
 
