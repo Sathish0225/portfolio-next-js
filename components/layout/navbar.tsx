@@ -15,7 +15,7 @@ import {
 import { ThemeSwitch } from "@/components/theme-switch";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
-import { CommandPalette } from "@/components/ui/command-palette";
+import { CommandPalette } from "@/components/command-palette";
 import { ThreeDCard } from "@/components/3d-card";
 
 interface NavItem {
@@ -147,7 +147,7 @@ export function Navbar() {
             exit="exit"
             className={cn(
               "fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-6xl z-50 transition-all duration-300 rounded-xl py-3 px-4",
-              isScrolled ? isScrolledBgClass : notScrolledBgClass
+              isScrolled ? isScrolledBgClass : notScrolledBgClass,
             )}
           >
             <ThreeDCard className="w-full">
@@ -195,7 +195,7 @@ export function Navbar() {
                             "px-4 py-2 rounded-md text-sm font-medium transition-all hover:text-primary hover:bg-muted/50 variable-font",
                             activeSection === item.href
                               ? "text-primary bg-muted/60 font-variation-settings: 'wght' 600"
-                              : "text-muted-foreground"
+                              : "text-muted-foreground",
                           )}
                           onClick={() => setActiveSection(item.href)}
                         >
@@ -282,7 +282,7 @@ export function Navbar() {
                                     "block py-3 px-4 text-lg font-medium rounded-md transition-colors",
                                     activeSection === item.href
                                       ? "text-primary bg-muted/60"
-                                      : "text-muted-foreground hover:text-primary hover:bg-muted/30"
+                                      : "text-muted-foreground hover:text-primary hover:bg-muted/30",
                                   )}
                                   onClick={() => setActiveSection(item.href)}
                                 >

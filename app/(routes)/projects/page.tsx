@@ -6,9 +6,20 @@ import { ProjectCard } from "@/components/projects/project-card";
 import { Badge } from "@/components/ui/badge";
 import { projects } from "@/data/projects";
 
-const allTechnologies = Array.from(
-  new Set(projects.flatMap((project) => project.technologies))
-).sort();
+const techCounts = projects.reduce(
+  (acc, project) => {
+    project.technologies.forEach((tech) => {
+      acc[tech] = (acc[tech] || 0) + 1;
+    });
+    return acc;
+  },
+  {} as Record<string, number>,
+);
+
+const allTechnologies = Object.entries(techCounts)
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 20)
+  .map(([tech]) => tech);
 
 export default function ProjectsPage() {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);

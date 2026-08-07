@@ -3,13 +3,20 @@ export interface Experience {
   id: string;
   title: string;
   company: string;
+  companyLogo?: string;
+  companyWebsite?: string;
+  employmentType: "Full-time" | "Contract" | "Internship";
   location: string;
   startDate: string;
-  endDate: string;
+  endDate?: string;
+  isCurrent?: boolean;
   description: string;
   techStack?: string[];
   achievements: string[];
-  type?: "work" | "research" | "education" | "leadership";
+  type: "work" | "research" | "education" | "leadership";
+  order?: number;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export const experiences: Experience[] = [
@@ -18,11 +25,14 @@ export const experiences: Experience[] = [
     id: "software-developer",
     title: "Software Developer",
     company: "Pedro",
-    location: "Singapore, SG",
-    startDate: "September 2020",
-    endDate: "Present",
+    employmentType: "Full-time",
+    location: "Singapore",
+    startDate: "2020-09",
+    endDate: "",
+    isCurrent: true,
     description:
-      "Developed and maintained full-stack solutions including iSecure360, Visitor Management System (VMS), and inventory management systems for both web and mobile platforms, ensuring seamless integration, security, and high performance.",
+      "Developed and maintained full-stack enterprise applications for web and mobile platforms.",
+    techStack: ["Laravel", "React", "Flutter", "MySQL", "AWS", "TypeScript"],
     achievements: [
       "Designed and implemented a comprehensive security workforce management solution (iSecure360) using Laravel PHP for the web and Flutter for the mobile app.",
       "Developed a Visitor Management System (VMS) with QR-based check-in/out, preregistration, and real-time notifications for web and mobile platforms.",
@@ -31,14 +41,16 @@ export const experiences: Experience[] = [
       "Optimized mobile apps for offline functionality and seamless data synchronization once online.",
     ],
     type: "work",
+    order: 1,
   },
   {
     id: "avms",
     title: "Lead Developer & Technical Owner",
     company: "Pedro",
+    employmentType: "Full-time",
     location: "Singapore, SG",
-    startDate: "March 2025",
-    endDate: "April 2025",
+    startDate: "2025-03",
+    endDate: "2025-04",
     techStack: [
       "React.js",
       "TypeScript",
@@ -61,14 +73,16 @@ export const experiences: Experience[] = [
       "Strengthened security with a centralized Access Control Module integrating with turnstiles, barriers, and ANPR cameras.",
     ],
     type: "leadership",
+    order: 2,
   },
   {
     id: "isecure360",
     title: "Lead Developer & Technical Owner",
     company: "Pedro",
+    employmentType: "Full-time",
     location: "Singapore, SG",
-    startDate: "June 2023",
-    endDate: "August 2023",
+    startDate: "2025-06",
+    endDate: "2025-08",
     techStack: [
       "Laravel PHP (Backend)",
       "MySQL",
@@ -85,14 +99,16 @@ export const experiences: Experience[] = [
       "Performed performance tuning and optimization to maintain fast, reliable, and scalable application performance.",
     ],
     type: "leadership",
+    order: 3,
   },
   {
     id: "isecurevms",
     title: "Lead Developer & Technical Owner",
     company: "Pedro",
+    employmentType: "Full-time",
     location: "Singapore, SG",
-    startDate: "November 2023",
-    endDate: "December 2023",
+    startDate: "2023-11",
+    endDate: "2023-12",
     techStack: [
       "Laravel PHP (Backend)",
       "MySQL",
@@ -110,14 +126,16 @@ export const experiences: Experience[] = [
       "Optimized performance to deliver a reliable and responsive user experience.",
     ],
     type: "leadership",
+    order: 4,
   },
   {
     id: "it-engineer",
     title: "IT Engineer",
     company: "Pedro",
+    employmentType: "Full-time",
     location: "Singapore, SG",
-    startDate: "September 2020",
-    endDate: "Present",
+    startDate: "2020-09",
+    endDate: "2021-11",
     description:
       "Managed IT infrastructure including on-premises email and web servers, and configured firewall devices to ensure high security for corporate systems.",
     achievements: [
@@ -126,14 +144,16 @@ export const experiences: Experience[] = [
       "Monitored and optimized IT infrastructure performance, ensuring minimal downtime and robust security compliance.",
     ],
     type: "work",
+    order: 5,
   },
   {
     id: "digital-alarm-it-support",
     title: "IT Support Engineer",
     company: "Digital Alarm Technologies",
+    employmentType: "Full-time",
     location: "Singapore",
-    startDate: "March 2018",
-    endDate: "July 2020",
+    startDate: "2018-03",
+    endDate: "2020-07",
     description:
       "Provided IT support and infrastructure management for hardware, software, and network systems, ensuring seamless operations and minimal downtime.",
     achievements: [
@@ -144,14 +164,16 @@ export const experiences: Experience[] = [
       "Set up and configured new hire PCs, laptops, and office hardware using deployment console images.",
     ],
     type: "work",
+    order: 6,
   },
   {
     id: "hinduja-global-support",
     title: "Support Engineer",
     company: "Hinduja Global Solutions",
+    employmentType: "Full-time",
     location: "Bangalore, Karnataka, India",
-    startDate: "June 2016",
-    endDate: "January 2018",
+    startDate: "2016-06",
+    endDate: "2018-01",
     description:
       "Provided technical support for hardware, software, and network issues, while managing server systems and onboarding new hires.",
     achievements: [
@@ -161,14 +183,16 @@ export const experiences: Experience[] = [
       "Managed installation, configuration, maintenance, upgrades, and backups of Windows and Linux-based servers.",
     ],
     type: "work",
+    order: 7,
   },
   {
     id: "kbg-services-support",
     title: "Support Engineer",
     company: "KBG Services",
+    employmentType: "Full-time",
     location: "Hosur, Tamil Nadu, India",
-    startDate: "June 2015",
-    endDate: "May 2016",
+    startDate: "2015-06",
+    endDate: "2016-05",
     description:
       "Managed IT infrastructure, ensuring compliance with organizational standards, and resolved network and server issues for a regional retail chain.",
     achievements: [
@@ -177,5 +201,6 @@ export const experiences: Experience[] = [
       "Resolved recurring network failures by troubleshooting LAN/WAN connections across multiple stores.",
     ],
     type: "work",
+    order: 8,
   },
 ];

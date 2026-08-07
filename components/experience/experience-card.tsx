@@ -1,109 +1,155 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight,
   MapPin,
-  Microscope,
   Briefcase,
   GraduationCap,
   Users,
+  Microscope,
+  Globe,
+  Calendar,
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+
 import { Experience } from "@/data/experience";
 
 interface ExperienceCardProps {
   experience: Experience;
-  index: number; // For animation staggering
+  index: number;
 }
 
+const formatDate = (date?: string) => {
+  if (!date) return "Present";
+
+  const [year, month] = date.split("-");
+
+  return new Date(Number(year), Number(month) - 1).toLocaleDateString("en-US", {
+    month: "short",
+    year: "numeric",
+  });
+};
+
 export function ExperienceCard({ experience, index }: ExperienceCardProps) {
-  // Function to get icon based on experience type
-  const getExperienceIcon = (type: string | undefined) => {
-    switch (type) {
-      case "research":
-        return <Microscope className="h-5 w-5" />;
+  const getExperienceIcon = () => {
+    switch (experience.type) {
       case "work":
-        return <Briefcase className="h-5 w-5" />;
-      case "leadership":
-        return <Users className="h-5 w-5" />;
+        return <Briefcase className="h-6 w-6" />;
+
+      case "research":
+        return <Microscope className="h-6 w-6" />;
+
       case "education":
-        return <GraduationCap className="h-5 w-5" />;
+        return <GraduationCap className="h-6 w-6" />;
+
+      case "leadership":
+        return <Users className="h-6 w-6" />;
+
       default:
-        return <Briefcase className="h-5 w-5" />;
+        return <Briefcase className="h-6 w-6" />;
     }
   };
 
   return (
     <motion.div
-      key={experience.id}
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 25 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+      transition={{
+        delay: index * 0.15,
+      }}
       className="relative mb-12 flex flex-col md:flex-row"
     >
-      {/* Simple timeline dot */}
-      <div className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary h-3 w-3 rounded-full" />
+      {/* Timeline Icon */}
 
-      {/* Desktop Icon - shown only on desktop and positioned correctly */}
       <div
-        className={`hidden md:block absolute -translate-y-6 ${
-          index % 2 === 0
-            ? "right-[calc(50%+12px)]" // Right of timeline if card is on left
-            : "left-[calc(50%+12px)]" // Left of timeline if card is on right
-        } text-primary`}
+        className={`absolute hidden md:block text-primary -translate-y-6 ${
+          index % 2 === 0 ? "right-[calc(50%+12px)]" : "left-[calc(50%+12px)]"
+        }`}
       >
-        {getExperienceIcon(experience.type)}
+        {getExperienceIcon()}
       </div>
 
-      {/* Mobile Icon - shown only on mobile */}
-      <div
-        className={`md:hidden absolute -translate-y-6 ${
-          index % 2 === 0
-            ? "left-[calc(50%+12px)]" // Right of timeline
-            : "right-[calc(50%+12px)]" // Left of timeline
-        } text-primary`}
-      >
-        {getExperienceIcon(experience.type)}
+      {/* Mobile */}
+
+      <div className="absolute md:hidden left-1/2 -translate-x-1/2 -translate-y-6 text-primary">
+        {getExperienceIcon()}
       </div>
 
-      {/* Content Card */}
+      {/* Card */}
+
       <div
         className={`mx-5 md:w-1/2 ${
           index % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
         }`}
       >
-        <Card className="overflow-hidden border border-border hover:border-primary/50 transition-colors">
-          <CardHeader className="bg-muted/50 p-4">
-            <div className="flex justify-between items-start">
-              <div className="flex-1">
-                <CardTitle>
-                  <h3 className="text-xl font-bold">{experience.title}</h3>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {experience.company}
-                  </p>
-                </CardTitle>
+        <Card className="overflow-hidden border hover:border-primary transition-all duration-300">
+          <CardHeader className="bg-muted/50">
+            <div className="flex justify-between gap-2">
+              <div className="flex gap-2">
+                {experience.companyLogo && (
+                  <Image
+                    src={experience.companyLogo}
+                    alt={experience.company}
+                    width={56}
+                    height={56}
+                    className="rounded-lg border"
+                  />
+                )}
+
+                <div>
+                  <h3 className="text-lg font-bold">{experience.title}</h3>
+
+                  <div className="flex flex-wrap items-center gap-2 mt-1">
+                    <span className="font-medium">{experience.company}</span>
+
+                    {experience.companyWebsite && (
+                      <Link href={experience.companyWebsite} target="_blank">
+                        <Globe className="h-4 w-4 text-primary" />
+                      </Link>
+                    )}
+
+                    <Badge variant="secondary">
+                      {experience.employmentType}
+                    </Badge>
+                  </div>
+
+                  <div className="flex items-center gap-1 mt-2 text-muted-foreground text-sm">
+                    <MapPin className="h-4 w-4" />
+
+                    {experience.location}
+                  </div>
+                </div>
               </div>
-              <Badge variant="outline" className="shrink-0">
-                {experience.startDate} - {experience.endDate}
+
+              <Badge
+                variant="outline"
+                className="flex items-center gap-1 h-fit"
+              >
+                <Calendar className="h-3 w-3" />
+                {formatDate(experience.startDate)} —{" "}
+                {experience.isCurrent
+                  ? "Present"
+                  : formatDate(experience.endDate)}
               </Badge>
             </div>
-            <div className="flex items-center text-sm text-muted-foreground mt-2">
-              <MapPin className="mr-1 h-4 w-4" />
-              {experience.location}
-            </div>
           </CardHeader>
-          <CardContent className="px-4 py-2 gap-2">
-            <p className="mb-2 text-sm">{experience.description}</p>
 
-            {experience.techStack && (
-              <div className="mb-2">
-                <h4 className="font-medium mb-1">Tech Stack:</h4>
+          <CardContent className="space-y-2">
+            <p className="text-sm leading-7">{experience.description}</p>
+
+            {experience.techStack && experience.techStack.length > 0 && (
+              <div>
+                <h4 className="font-semibold mb-2">Technologies</h4>
+
                 <div className="flex flex-wrap gap-2">
-                  {experience.techStack.map((tech, i) => (
-                    <Badge key={i} variant="secondary">
+                  {experience.techStack.map((tech) => (
+                    <Badge key={tech} variant="secondary">
                       {tech}
                     </Badge>
                   ))}
@@ -111,17 +157,21 @@ export function ExperienceCard({ experience, index }: ExperienceCardProps) {
               </div>
             )}
 
-            <Separator className="my-2" />
+            <Separator />
 
-            <h4 className="font-medium mb-2 text-sm">Key Achievements:</h4>
-            <ul className="space-y-2">
-              {experience.achievements.map((achievement, i) => (
-                <li key={i} className="flex items-start">
-                  <ArrowRight className="mr-2 h-4 w-4 text-primary mt-0.5 shrink-0" />
-                  <span className="text-sm">{achievement}</span>
-                </li>
-              ))}
-            </ul>
+            <div>
+              <h4 className="font-semibold mb-3">Key Achievements</h4>
+
+              <ul className="space-y-3">
+                {experience.achievements.map((item, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <ArrowRight className="h-4 w-4 text-primary mt-1 shrink-0" />
+
+                    <span className="text-sm leading-6">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </CardContent>
         </Card>
       </div>

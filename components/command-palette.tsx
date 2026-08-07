@@ -1,7 +1,9 @@
+// components/command-palette.tsx
 "use client";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import {
   Search,
   ArrowRight,
@@ -11,33 +13,24 @@ import {
   Code,
   BookOpen,
   Mail,
+  Github,
+  Linkedin,
+  Phone,
 } from "lucide-react";
-import {
-  CommandDialog,
-  CommandInput,
-  CommandList,
-  CommandEmpty,
-  CommandGroup,
-  CommandItem,
-} from "@/components/ui/commands";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { socialLinks } from "@/data/social";
+import { useTheme } from "next-themes";
 
-// Get icon component for social links
-const getIconComponent = (iconName: string) => {
-  switch (iconName) {
-    case "github":
-      return <ArrowRight className="mr-2 h-4 w-4" />;
-    case "linkedin":
-      return <ArrowRight className="mr-2 h-4 w-4" />;
-    case "mail":
-      return <ArrowRight className="mr-2 h-4 w-4" />;
-    case "phone":
-      return <ArrowRight className="mr-2 h-4 w-4" />;
-    default:
-      return <ArrowRight className="mr-2 h-4 w-4" />;
-  }
-};
+// Define navItems directly instead of importing
+const navItems = [
+  { title: "Home", href: "/" },
+  { title: "About", href: "/about" },
+  { title: "Experience", href: "/experience" },
+  { title: "Projects", href: "/projects" },
+  { title: "Blog", href: "/blog" },
+  { title: "Contact", href: "/contact" },
+];
 
 // Get icon for navigation items
 const getNavIcon = (href: string) => {
@@ -59,100 +52,161 @@ const getNavIcon = (href: string) => {
   }
 };
 
-// Navigation items
-const navItems = [
-  { title: "Home", href: "/" },
-  { title: "About", href: "/about" },
-  { title: "Experience", href: "/experience" },
-  { title: "Projects", href: "/projects" },
-  { title: "Blog", href: "/blog" },
-  { title: "Contact", href: "/contact" },
-];
+// Get icon for social links
+const getSocialIcon = (iconName: string) => {
+  switch (iconName) {
+    case "github":
+      return <Github className="mr-2 h-4 w-4" />;
+    case "linkedin":
+      return <Linkedin className="mr-2 h-4 w-4" />;
+    case "mail":
+      return <Mail className="mr-2 h-4 w-4" />;
+    case "phone":
+      return <Phone className="mr-2 h-4 w-4" />;
+    default:
+      return <ArrowRight className="mr-2 h-4 w-4" />;
+  }
+};
 
 export function CommandPalette() {
   const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState("");
   const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
+    setMounted(true);
+
     const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+      const target = e.target as HTMLElement;
+
+      if (
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.isContentEditable
+      ) {
+        return;
+      }
+
+      // Cmd/Ctrl + K
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
         setOpen((open) => !open);
+        return;
+      }
+
+      // T
+      if (e.key.toLowerCase() === "t") {
+        e.preventDefault();
+        console.log("Toggle theme");
+        setTheme(theme === "dark" ? "light" : "dark");
       }
     };
 
     document.addEventListener("keydown", down);
+
     return () => document.removeEventListener("keydown", down);
-  }, []);
+  }, [theme, setTheme]);
+
+  if (!mounted) return null;
+
+  // Filter items based on search query
+  const filteredNavItems = navItems.filter((item) =>
+    item.title.toLowerCase().includes(search.toLowerCase()),
+  );
+
+  const filteredSocialLinks = socialLinks.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase()),
+  );
 
   return (
     <>
       <Button
         variant="outline"
-        className="hidden md:flex h-9 w-9 items-center justify-center rounded-md border border-input bg-transparent hover:bg-accent hover:text-accent-foreground ml-2"
+        size="icon"
+        className="w-9 h-9 rounded-md hidden md:flex"
         onClick={() => setOpen(true)}
       >
         <Search className="h-4 w-4" />
         <span className="sr-only">Search</span>
       </Button>
-      <Button
-        variant="outline"
-        size="sm"
-        className="h-8 md:hidden rounded-md border border-input"
-        onClick={() => setOpen(true)}
-      >
-        <Search className="h-3.5 w-3.5 mr-2" />
-        <span className="sr-only">Search</span>
-      </Button>
 
-      <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Type a command or search..." />
-        <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="p-0 max-w-md gap-0">
+          {/* Add DialogTitle for accessibility */}
+          <DialogTitle className="sr-only">Command Menu</DialogTitle>
 
-          <CommandGroup heading="Navigation">
-            {navItems.map((item) => (
-              <CommandItem
-                key={item.href}
-                onSelect={() => {
-                  router.push(item.href);
-                  setOpen(false);
-                }}
-              >
-                {getNavIcon(item.href)}
-                <span>{item.title}</span>
-              </CommandItem>
-            ))}
-          </CommandGroup>
+          <div className="flex items-center border-b px-3">
+            <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+            <input
+              className="flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
+              placeholder="Type a command or search..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+          <div className="max-h-[60vh] overflow-y-auto">
+            {filteredNavItems.length === 0 &&
+            filteredSocialLinks.length === 0 ? (
+              <p className="py-6 text-center text-sm">No results found.</p>
+            ) : (
+              <>
+                {filteredNavItems.length > 0 && (
+                  <div className="p-2">
+                    <p className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
+                      Navigation
+                    </p>
+                    <div className="mt-2 space-y-1">
+                      {filteredNavItems.map((item) => (
+                        <div
+                          key={item.href}
+                          className={cn(
+                            "flex cursor-pointer items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-accent hover:text-accent-foreground",
+                          )}
+                          onClick={() => {
+                            router.push(item.href);
+                            setOpen(false);
+                          }}
+                        >
+                          {getNavIcon(item.href)}
+                          <span>{item.title}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
-          <CommandGroup heading="Social">
-            {socialLinks.map((social) => (
-              <CommandItem
-                key={social.id}
-                onSelect={() => {
-                  window.open(social.url, "_blank");
-                  setOpen(false);
-                }}
-              >
-                {getIconComponent(social.icon)}
-                <span>{social.name}</span>
-              </CommandItem>
-            ))}
-          </CommandGroup>
-
-          <CommandGroup heading="Theme">
-            <CommandItem
-              onSelect={() => {
-                document.documentElement.classList.toggle("dark");
-                setOpen(false);
-              }}
-            >
-              <ArrowRight className="mr-2 h-4 w-4" />
-              <span>Toggle Theme</span>
-            </CommandItem>
-          </CommandGroup>
-        </CommandList>
-      </CommandDialog>
+                {filteredSocialLinks.length > 0 && (
+                  <div className="p-2">
+                    <p className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
+                      Social
+                    </p>
+                    <div className="mt-2 space-y-1">
+                      {filteredSocialLinks.map((social) => (
+                        <div
+                          key={social.id}
+                          className={cn(
+                            "flex cursor-pointer items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-accent hover:text-accent-foreground",
+                          )}
+                          onClick={() => {
+                            window.open(social.url, "_blank");
+                            setOpen(false);
+                          }}
+                        >
+                          {getSocialIcon(social.icon)}
+                          <span>{social.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
