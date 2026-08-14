@@ -1,9 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
+import { Quote, UserRound } from "lucide-react";
+
 import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Quote } from "lucide-react";
 
 interface Testimonial {
   id: string;
@@ -65,51 +68,118 @@ const testimonials: Testimonial[] = [
 
 export function Testimonials() {
   return (
-    <section className="py-12 md:py-24 relative overflow-hidden">
-      <div className="container px-4 md:px-6 mx-auto">
+    <section
+      id="recommendations"
+      className="relative overflow-hidden border-y bg-muted/20 py-16 md:py-24"
+    >
+      {/* Background decoration */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute -left-48 top-20 h-[400px] w-[400px] rounded-full bg-primary/5 blur-3xl" />
+
+        <div className="absolute -bottom-48 -right-48 h-[450px] w-[450px] rounded-full bg-primary/5 blur-3xl" />
+      </div>
+
+      <div className="container mx-auto max-w-6xl px-4 md:px-6">
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-12"
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+          className="mx-auto max-w-3xl text-center"
         >
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-            Recommendations
+          <Badge
+            variant="outline"
+            className="mb-4 gap-2 rounded-full px-3 py-1"
+          >
+            <UserRound className="h-3.5 w-3.5 text-primary" />
+            Professional Recommendations
+          </Badge>
+
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+            What People <span className="text-primary">Say About My Work</span>
           </h2>
-          <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed mt-4">
-            What mentors and colleagues say about my work
+
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-muted-foreground md:text-lg">
+            Feedback from managers, engineers, designers, and colleagues I have
+            worked with throughout my career.
           </p>
         </motion.div>
 
-        <div className="grid gap-4 md:grid-cols-3 mx-auto">
+        {/* Testimonials */}
+        <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={testimonial.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.2 }}
+              initial={{
+                opacity: 0,
+                y: 25,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              viewport={{
+                once: true,
+                margin: "-50px",
+              }}
+              transition={{
+                duration: 0.45,
+                delay: index * 0.07,
+              }}
+              className="h-full"
             >
-              <Card className="h-full">
-                <CardContent className="p-6 ">
-                  <Quote className="h-10 w-10 text-primary/20 mb-4" />
+              <Card className="group relative h-full overflow-hidden border bg-card/70 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg">
+                <CardContent className="flex h-full flex-col p-6">
+                  {/* Quote icon */}
+                  <div className="mb-5 flex items-center justify-between">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                      <Quote className="h-5 w-5" />
+                    </div>
 
-                  <p className="italic text-muted-foreground mb-6">
+                    <span className="text-xs text-muted-foreground">
+                      {testimonial.date}
+                    </span>
+                  </div>
+
+                  {/* Quote */}
+                  <blockquote className="flex-1 text-sm leading-7 text-muted-foreground">
                     &quot;{testimonial.quote}&quot;
-                  </p>
+                  </blockquote>
 
-                  <div className="flex items-center gap-4">
-                    <Avatar className="h-12 w-12 border-2 border-primary/20">
-                      <AvatarFallback className="bg-primary/10 text-primary">
-                        {testimonial.name.charAt(0)}
-                      </AvatarFallback>
+                  {/* Person */}
+                  <div className="mt-6 flex items-center gap-3 border-t pt-5">
+                    <Avatar className="h-11 w-11 border-2 border-primary/10">
+                      {testimonial.image ? (
+                        <Image
+                          src={testimonial.image}
+                          alt={`${testimonial.name} profile`}
+                          width={44}
+                          height={44}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <AvatarFallback className="bg-primary/10 text-sm font-semibold text-primary">
+                          {testimonial.name
+                            .split(" ")
+                            .map((name) => name[0])
+                            .join("")
+                            .slice(0, 2)}
+                        </AvatarFallback>
+                      )}
                     </Avatar>
-                    <div>
-                      <p className="font-medium">{testimonial.name}</p>
-                      <p className="text-sm text-muted-foreground">
+
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold">
+                        {testimonial.name}
+                      </p>
+
+                      <p className="truncate text-xs text-muted-foreground">
                         {testimonial.position}
                       </p>
-                      <p className="text-xs text-muted-foreground">
-                        {testimonial.relation} • {testimonial.date}
+
+                      <p className="mt-0.5 text-xs text-primary">
+                        {testimonial.relation}
                       </p>
                     </div>
                   </div>
@@ -118,6 +188,21 @@ export function Testimonials() {
             </motion.div>
           ))}
         </div>
+
+        {/* Bottom statement */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.35 }}
+          className="mx-auto mt-10 max-w-2xl text-center"
+        >
+          <p className="text-sm leading-6 text-muted-foreground">
+            Strong engineering is not only about writing code. It is about
+            taking ownership, solving difficult problems, communicating clearly,
+            and delivering software that people can depend on.
+          </p>
+        </motion.div>
       </div>
     </section>
   );

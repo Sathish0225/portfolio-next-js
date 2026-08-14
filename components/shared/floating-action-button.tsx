@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   Plus,
+  X,
   Home,
   User,
   Briefcase,
@@ -14,8 +15,9 @@ import {
   Github,
   Linkedin,
   Phone,
-  X,
+  type LucideIcon,
 } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -25,107 +27,160 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
 import { socialLinks } from "@/data/social";
 
-// Navigation items
-const navItems = [
-  { title: "Home", href: "/", icon: <Home className="mr-2 h-4 w-4" /> },
-  { title: "About", href: "/about", icon: <User className="mr-2 h-4 w-4" /> },
+interface NavItem {
+  title: string;
+  href: string;
+  icon: LucideIcon;
+}
+
+const navItems: NavItem[] = [
+  {
+    title: "Home",
+    href: "/",
+    icon: Home,
+  },
+  {
+    title: "About",
+    href: "/about",
+    icon: User,
+  },
   {
     title: "Experience",
     href: "/experience",
-    icon: <Briefcase className="mr-2 h-4 w-4" />,
+    icon: Briefcase,
   },
   {
     title: "Projects",
     href: "/projects",
-    icon: <Code className="mr-2 h-4 w-4" />,
+    icon: Code,
   },
-  { title: "Blog", href: "/blog", icon: <BookOpen className="mr-2 h-4 w-4" /> },
+  {
+    title: "Blog",
+    href: "/blog",
+    icon: BookOpen,
+  },
   {
     title: "Contact",
     href: "/contact",
-    icon: <Mail className="mr-2 h-4 w-4" />,
+    icon: Mail,
   },
 ];
 
-// Social icon map
-const getSocialIcon = (iconName: string) => {
-  switch (iconName) {
-    case "github":
-      return <Github className="mr-2 h-4 w-4" />;
-    case "linkedin":
-      return <Linkedin className="mr-2 h-4 w-4" />;
-    case "mail":
-      return <Mail className="mr-2 h-4 w-4" />;
-    case "phone":
-      return <Phone className="mr-2 h-4 w-4" />;
-    default:
-      return null;
-  }
+const socialIconMap: Record<string, LucideIcon> = {
+  github: Github,
+  linkedin: Linkedin,
+  mail: Mail,
+  phone: Phone,
 };
+
+function getSocialIcon(iconName: string) {
+  return socialIconMap[iconName] ?? Mail;
+}
 
 export function FloatingActionButton() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
+  const handleNavigation = (href: string) => {
+    setIsOpen(false);
+    router.push(href);
+  };
+
+  const handleSocialLink = (url: string) => {
+    setIsOpen(false);
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
   return (
     <motion.div
-      className="fixed right-6 bottom-6 z-40"
+      className="fixed bottom-6 right-6 z-40"
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: 1, type: "spring" }}
+      transition={{
+        delay: 1,
+        type: "spring",
+        stiffness: 200,
+        damping: 15,
+      }}
     >
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenuTrigger asChild>
           <Button
-            size="lg"
-            className="h-14 w-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transition-all"
+            type="button"
+            size="icon"
+            aria-label={isOpen ? "Close menu" : "Open navigation menu"}
+            aria-expanded={isOpen}
+            className="
+              size-14
+              rounded-full
+              bg-primary
+              text-primary-foreground
+              shadow-lg
+              transition-all
+              duration-300
+              hover:bg-primary/90
+              hover:shadow-xl
+            "
           >
             <motion.div
-              animate={{ rotate: isOpen ? 45 : 0 }}
-              transition={{ duration: 0.2 }}
+              animate={{
+                rotate: isOpen ? 45 : 0,
+              }}
+              transition={{
+                duration: 0.2,
+                ease: "easeInOut",
+              }}
             >
-              {isOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Plus className="h-6 w-6" />
-              )}
+              {isOpen ? <X className="size-6" /> : <Plus className="size-6" />}
             </motion.div>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56">
+
+        <DropdownMenuContent align="end" sideOffset={12} className="w-56">
+          {/* Navigation */}
           <DropdownMenuLabel>Navigate</DropdownMenuLabel>
-          {navItems.map((item) => (
-            <DropdownMenuItem
-              key={item.href}
-              className="flex items-center cursor-pointer"
-              onClick={() => {
-                router.push(item.href);
-                setIsOpen(false);
-              }}
-            >
-              {item.icon}
-              <span>{item.title}</span>
-            </DropdownMenuItem>
-          ))}
 
-          <DropdownMenuSeparator />
+          {navItems.map((item) => {
+            const Icon = item.icon;
 
-          <DropdownMenuLabel>Connect</DropdownMenuLabel>
-          {socialLinks.map((link) => (
-            <DropdownMenuItem
-              key={link.id}
-              className="flex items-center cursor-pointer"
-              onClick={() => {
-                window.open(link.url, "_blank");
-                setIsOpen(false);
-              }}
-            >
-              {getSocialIcon(link.icon)}
-              <span>{link.name}</span>
-            </DropdownMenuItem>
-          ))}
+            return (
+              <DropdownMenuItem
+                key={item.href}
+                onClick={() => handleNavigation(item.href)}
+                className="cursor-pointer gap-2"
+              >
+                <Icon className="size-4 text-muted-foreground" />
+                <span>{item.title}</span>
+              </DropdownMenuItem>
+            );
+          })}
+
+          {/* Social Links */}
+          {socialLinks.length > 0 && (
+            <>
+              <DropdownMenuSeparator />
+
+              <DropdownMenuLabel>Connect</DropdownMenuLabel>
+
+              {socialLinks.map((link) => {
+                const Icon = getSocialIcon(link.icon);
+
+                return (
+                  <DropdownMenuItem
+                    key={link.id}
+                    onClick={() => handleSocialLink(link.url)}
+                    className="cursor-pointer gap-2"
+                  >
+                    <Icon className="size-4 text-muted-foreground" />
+                    <span>{link.name}</span>
+                  </DropdownMenuItem>
+                );
+              })}
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </motion.div>

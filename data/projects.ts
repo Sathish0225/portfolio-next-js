@@ -1,6 +1,81 @@
+import {
+  BrainCircuit,
+  Building2,
+  Cloud,
+  FlaskConical,
+  Layers3,
+  LucideIcon,
+  Monitor,
+  PlugZap2,
+  Smartphone,
+} from "lucide-react";
+
+export type ProjectCategory =
+  | "All"
+  | "AI"
+  | "Enterprise"
+  | "Web"
+  | "Mobile"
+  | "Desktop"
+  | "Cloud"
+  | "Plugin"
+  | "Practice & Experiments";
+
+export const projectCategoryConfig: {
+  value: ProjectCategory;
+  label: string;
+  icon: LucideIcon;
+}[] = [
+  {
+    value: "All",
+    label: "All Projects",
+    icon: Layers3,
+  },
+  {
+    value: "AI",
+    label: "AI & GenAI",
+    icon: BrainCircuit,
+  },
+  {
+    value: "Enterprise",
+    label: "Enterprise",
+    icon: Building2,
+  },
+  {
+    value: "Web",
+    label: "Web",
+    icon: Layers3,
+  },
+  {
+    value: "Mobile",
+    label: "Mobile",
+    icon: Smartphone,
+  },
+  {
+    value: "Desktop",
+    label: "Desktop",
+    icon: Monitor,
+  },
+  {
+    value: "Cloud",
+    label: "Cloud",
+    icon: Cloud,
+  },
+  {
+    value: "Plugin",
+    label: "Plugin",
+    icon: PlugZap2,
+  },
+  {
+    value: "Practice & Experiments",
+    label: "Practice & Experiments",
+    icon: FlaskConical,
+  },
+];
+
 export interface Project {
   id: string;
-  category: string;
+  category: ProjectCategory;
   title: string;
   description: string;
   longDescription?: string;
@@ -17,7 +92,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: "resuvy-resume-builder",
-    category: "Web Application",
+    category: "Web",
     title: "Resuvy Resume Builder",
     description:
       "Create a modern, professional resume in minutes, Customize templates, highlight your skills, and get a polished PDF ready to impress employers.",
@@ -134,7 +209,7 @@ MIT License © 2025 Sathishkumar Ranganathan
   },
   {
     id: "kyvra-ai-chatbot",
-    category: "Web Application",
+    category: "AI",
     title: "Kyvra Chatbot AI",
     description:
       "Kyvra Chatbot AI is an intelligent conversational assistant powered by Google and OpenAI models. It delivers natural, dynamic, and visually engaging AI-driven interactions through a modern web experience.",
@@ -211,7 +286,7 @@ MIT License © 2025 Sathishkumar Ranganathan
   },
   {
     id: "iSecure360",
-    category: "Web Application",
+    category: "Web",
     title: "iSecure360",
     description:
       "iSecure360 simplifies security workforce and operations management with an intuitive interface, available on both mobile and web platforms. Its multi-tenant setup ensures isolated data for each client while maintaining a single codebase for efficient maintenance.",
@@ -723,7 +798,7 @@ Add:
   },
   {
     id: "iSecure360-mobile",
-    category: "Flutter Application",
+    category: "Mobile",
     title: "iSecure360 Mobile App",
     description:
       "The Flutter mobile app for iSecure360 empowers security guards to log attendance, patrols, and incidents in real-time, even offline, ensuring seamless operations across multiple client sites.",
@@ -765,7 +840,7 @@ For help getting started with Flutter development, view the [online documentatio
   },
   {
     id: "iSecureVMS",
-    category: "Web Application",
+    category: "Web",
     title: "iSecureVMS",
     description:
       "iSecureVMS streamlines visitor and contractor management with a secure, user-friendly platform available on both web and mobile. It enhances workplace safety and efficiency through digital workflows and real-time monitoring.",
@@ -1093,7 +1168,7 @@ GRANT ALL PRIVILEGES ON your-database-name-here . * TO 'your-username-here'@'loc
   },
   {
     id: "iSecureVMS-mobile",
-    category: "Flutter Application",
+    category: "Mobile",
     title: "iSecureVMS Mobile App",
     description:
       "The Flutter mobile app for iSecureVMS empowers reception staff, security officers, and hosts to manage visitor and contractor activities in real time, with offline support and QR code check-in/out.",
@@ -1135,7 +1210,7 @@ For help getting started with Flutter development, view the [online documentatio
   },
   {
     id: "avms",
-    category: "Web Application",
+    category: "Web",
     title: "AVMS",
     description:
       "AVMS is a comprehensive Access Control and Visitor Management System for condos, offices, and secure facilities, combining visitor, vehicle, and facility management in one seamless platform across web and mobile.",
@@ -1575,7 +1650,7 @@ sudo supervisorctl restart laravel-worker:*
   },
   {
     id: "avms-mobile",
-    category: "Flutter Application",
+    category: "Mobile",
     title: "AVMS Mobile App",
     description:
       "The Flutter mobile companion app for AVMS empowers residents, visitors, and security staff with real-time access control, visitor management, vehicle registration, and facility booking—all from their smartphones.",
@@ -1656,7 +1731,7 @@ The app integrates seamlessly with:
   },
   {
     id: "vrs",
-    category: "Windows Application",
+    category: "Desktop",
     title: "VRS (Vehicle Registration System)",
     description:
       "VRS is a Windows-based Vehicle Registration System designed to log visitor and resident vehicle movement with integrated live video feed and automatic license plate recognition (ANPR).",
@@ -1684,7 +1759,7 @@ The app integrates seamlessly with:
   },
   {
     id: "lpr-announcement",
-    category: "Windows Application",
+    category: "Desktop",
     title: "LPR & Announcement System",
     description:
       "A Windows-based License Plate Recognition and Announcement System using Dahua ANPR cameras, C#, and MySQL to automate vehicle logging and provide real-time text-to-speech announcements.",
@@ -1713,7 +1788,7 @@ The app integrates seamlessly with:
   },
   {
     id: "idata-label-printer",
-    category: "Flutter Plugin",
+    category: "Plugin",
     title: "iData Label Printer",
     description:
       "A custom Flutter plugin for Android that enables seamless Bluetooth connectivity with iData thermal and label printers for on-demand printing.",
@@ -1740,7 +1815,7 @@ The app integrates seamlessly with:
   },
   {
     id: "srm",
-    category: "Web Application",
+    category: "Web",
     title: "SRM (Service Report Management System)",
     description:
       "A Service Report Management System built with CodeIgniter 4, Bootstrap 4, and MySQL, with a companion Flutter app for field technicians to manage service reports on the go.",
@@ -1769,7 +1844,7 @@ The app integrates seamlessly with:
   },
   {
     id: "inventory-system",
-    category: "Web Application",
+    category: "Web",
     title: "Inventory Management System",
     description:
       "A web-based Inventory Management System built with Core PHP, MySQL, and HTML to track, manage, and update stock efficiently.",
@@ -1792,7 +1867,7 @@ The app integrates seamlessly with:
   },
   {
     id: "code-editor-io",
-    category: "Web Application",
+    category: "Web",
     title: "Code Editor io",
     description:
       "An online code and markdown editor built with React.js, featuring live preview, GitHub Flavored Markdown (GFM) support, and local auto-save.",
@@ -1885,7 +1960,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
   },
   {
     id: "shareease",
-    category: "Web Application",
+    category: "Web",
     title: "ShareEase",
     description:
       "ShareEase is a secure and user-friendly file sharing platform designed for easy and efficient exchange of files.",
@@ -1993,7 +2068,7 @@ That’s it. Now enjoy the application running.
   },
   {
     id: "todo-app",
-    category: "Web Application",
+    category: "Web",
     title: "Todo App",
     description:
       "A simple yet powerful to-do list app to manage tasks, deadlines, and priorities efficiently.",
@@ -2085,7 +2160,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
   },
   {
     id: "old-portfolio-2",
-    category: "Portfolio",
+    category: "Web",
     title: "Old Portfolio 2",
     description:
       "A professional portfolio website to showcase skills, projects, and achievements.",
@@ -2155,7 +2230,7 @@ Fell free to point out any bugs🪲 or improvements in the issues tab.`,
   },
   {
     id: "old-portfolio",
-    category: "Portfolio",
+    category: "Web",
     title: "Old Portfolio",
     description:
       "A professional portfolio website to showcase skills, projects, and achievements.",
@@ -2247,7 +2322,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
   },
   {
     id: "sudoku-solver",
-    category: "Web Application",
+    category: "Web",
     title: "Sudoku Solver",
     description:
       "A web-based Sudoku solver that instantly solves valid puzzles entered by the user.",
@@ -2339,7 +2414,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
   },
   {
     id: "small-workouts",
-    category: "Workouts",
+    category: "Practice & Experiments",
     title: "Small Workouts",
     description:
       "A collection of short coding challenges to strengthen understanding of JavaScript functions.",

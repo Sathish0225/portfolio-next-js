@@ -1,193 +1,266 @@
 "use client";
 
 import { motion } from "framer-motion";
+import {
+  BrainCircuit,
+  BriefcaseBusiness,
+  Cloud,
+  Code2,
+  Database,
+  GraduationCap,
+  Layers3,
+  Lightbulb,
+  LockKeyhole,
+  LucideIcon,
+  MessageSquare,
+  Smartphone,
+  Users,
+} from "lucide-react";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { education } from "@/data/education";
-import { skills, SkillCategory } from "@/data/skills";
-import { BookOpen, Users, LucideAward, Brain } from "lucide-react";
+
+const engineeringAreas = [
+  {
+    icon: Code2,
+    title: "Full-Stack Engineering",
+    description:
+      "Designing and developing production web applications, RESTful APIs, backend services, and modern frontend experiences.",
+  },
+  {
+    icon: Smartphone,
+    title: "Web & Mobile Applications",
+    description:
+      "Building cross-platform mobile applications with Flutter alongside responsive web applications using React and Next.js.",
+  },
+  {
+    icon: Cloud,
+    title: "Cloud & Deployment",
+    description:
+      "Deploying and maintaining production applications with cloud infrastructure, CI/CD workflows, monitoring, and performance optimization.",
+  },
+  {
+    icon: Database,
+    title: "Data & Backend Systems",
+    description:
+      "Designing relational and NoSQL data models, optimizing queries, and building maintainable backend architectures.",
+  },
+  {
+    icon: LockKeyhole,
+    title: "Security & Access Control",
+    description:
+      "Implementing authentication, authorization, RBAC, API security, and secure application development practices.",
+  },
+  {
+    icon: BrainCircuit,
+    title: "AI-Powered Applications",
+    description:
+      "Currently expanding into Generative AI, LLM applications, RAG, embeddings, AI APIs, and intelligent application workflows.",
+  },
+];
+
+const principles = [
+  {
+    icon: Layers3,
+    number: "01",
+    title: "Build for Maintainability",
+    description:
+      "I focus on clear architecture, separation of concerns, reusable components, and code that remains maintainable as systems evolve.",
+  },
+  {
+    icon: Lightbulb,
+    number: "02",
+    title: "Solve the Real Problem",
+    description:
+      "Good engineering starts with understanding the business problem and choosing the simplest reliable solution that delivers measurable value.",
+  },
+  {
+    icon: Users,
+    number: "03",
+    title: "Collaborate & Communicate",
+    description:
+      "I value clear communication, knowledge sharing, technical discussions, and close collaboration across engineering and business teams.",
+  },
+  {
+    icon: MessageSquare,
+    number: "04",
+    title: "Keep Learning",
+    description:
+      "I continuously explore new technologies and currently focus on applying AI capabilities to practical software engineering problems.",
+  },
+];
 
 export default function AboutPage() {
   return (
     <>
-      <section className="py-12 md:py-24">
-        <div className="container px-4 md:px-6 mx-auto">
+      <section className="relative overflow-hidden py-16 md:py-24">
+        <div className="pointer-events-none absolute inset-0 -z-10">
+          <div className="absolute -left-48 top-10 h-[450px] w-[450px] rounded-full bg-primary/5 blur-3xl" />
+
+          <div className="absolute -bottom-48 -right-48 h-[450px] w-[450px] rounded-full bg-primary/5 blur-3xl" />
+        </div>
+
+        <div className="container mx-auto max-w-6xl px-4 md:px-6">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="flex flex-col items-center justify-center space-y-4 text-center mb-12"
+            transition={{ duration: 0.6 }}
+            className="mx-auto max-w-4xl text-center"
           >
-            <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+            <Badge
+              variant="outline"
+              className="mb-5 gap-2 rounded-full px-3 py-1"
+            >
+              <BriefcaseBusiness className="h-3.5 w-3.5 text-primary" />
               About Me
+            </Badge>
+
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+              Building Software That{" "}
+              <span className="text-primary">Solves Real Problems</span>
             </h1>
-            <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Get to know more about my background and skills
+
+            <p className="mx-auto mt-6 max-w-3xl text-base leading-8 text-muted-foreground md:text-lg">
+              I&apos;m Sathishkumar Ranganathan, a Full-Stack Software Developer
+              with 10+ years of experience across software development, IT
+              infrastructure, web applications, mobile applications, and
+              cloud-based systems.
+            </p>
+
+            <p className="mx-auto mt-4 max-w-3xl text-base leading-8 text-muted-foreground md:text-lg">
+              My core experience is in building production systems using
+              Laravel, React, Next.js, Flutter, Node.js, databases, and AWS.
+              I&apos;m currently expanding this foundation into AI-powered
+              application development, with a focus on Generative AI, LLMs, RAG,
+              embeddings, and intelligent software workflows.
             </p>
           </motion.div>
 
-          <div className="grid gap-8 md:grid-cols-2">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              <h2 className="text-2xl font-bold mb-4">Who I Am</h2>
-              <div className="space-y-4 text-muted-foreground">
-                <p>
-                  I&apos;m Sathishkumar Ranganathan, a Full Stack Developer
-                  passionate about building scalable web applications and
-                  intelligent systems using React.js, Next.js, PHP, and Flutter.
-                </p>
-                <p>
-                  I specialize in creating user-friendly and efficient
-                  applications that solve real-world problems. My experience
-                  spans full-stack development, UI/UX design, and mobile app
-                  development, allowing me to deliver end-to-end solutions with
-                  clean and maintainable code.
-                </p>
-                <p>
-                  I&apos;m particularly interested in the intersection of web
-                  and mobile technologies, where I design and develop projects
-                  that leverage modern frameworks and best practices to create
-                  robust, high-performance, and engaging applications.
-                </p>
-              </div>
+          {/* Profile Stats */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="mx-auto mt-10 grid max-w-4xl grid-cols-2 gap-3 md:grid-cols-4"
+          >
+            <ProfileStat value="10+" label="Years in IT" />
+            <ProfileStat value="5+" label="Years Full-Stack" />
+            <ProfileStat value="Web + Mobile" label="Application Development" />
+            <ProfileStat value="AI" label="Current Specialization" />
+          </motion.div>
+        </div>
+      </section>
 
-              <h2 className="text-2xl font-bold mt-8 mb-4">Education</h2>
-              <div className="space-y-4">
-                {education.map((edu) => (
-                  <Card key={edu.id}>
-                    <CardHeader className="px-4 py-2">
-                      <CardTitle>
-                        <div>
-                          <h3 className="text-lg font-bold">{edu.degree}</h3>
-                          <p className="text-sm text-muted-foreground">
-                            {edu.institution}
-                          </p>
-                        </div>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="px-4 py-2 pt-0 w-full gap-0">
-                      <div className="flex justify-between items-center w-full text-sm">
-                        <span className="text-muted-foreground">
-                          {edu.startDate} - {edu.endDate}
-                        </span>
-                        <span className="text-muted-foreground">
-                          {edu.location}
-                        </span>
+      <section className="border-y bg-muted/20 py-16 md:py-24">
+        <div className="container mx-auto max-w-6xl px-4 md:px-6">
+          <SectionHeader
+            icon={Code2}
+            eyebrow="Engineering Profile"
+            title={
+              <>
+                What I <span className="text-primary">Build</span>
+              </>
+            }
+            description="My experience covers the complete software development lifecycle, from architecture and implementation to deployment, maintenance, and continuous improvement."
+          />
+
+          <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {engineeringAreas.map((area, index) => {
+              const Icon = area.icon;
+
+              return (
+                <motion.div
+                  key={area.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{
+                    duration: 0.45,
+                    delay: index * 0.05,
+                  }}
+                >
+                  <Card className="group h-full bg-card/70 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg">
+                    <CardContent className="p-6">
+                      <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary transition-transform duration-300 group-hover:scale-110">
+                        <Icon className="h-5 w-5" />
                       </div>
-                      {edu.gpa && (
-                        <Badge variant="outline" className="mt-2">
-                          CGPA: {edu.gpa}
-                        </Badge>
-                      )}
-                      {edu.description && (
-                        <p className="mt-2 text-sm">{edu.description}</p>
-                      )}
+
+                      <h3 className="font-semibold">{area.title}</h3>
+
+                      <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                        {area.description}
+                      </p>
                     </CardContent>
                   </Card>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <h2 className="text-2xl font-bold mb-4">Skills</h2>
-
-              {Object.keys(skills).map((category) => (
-                <div key={category} className="mb-6">
-                  <h3 className="text-lg font-semibold mb-3">{category}</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {skills[category as SkillCategory].map((skill) => (
-                      <Badge key={skill.name} variant="secondary">
-                        {skill.name}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </motion.div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      <section className="py-12 bg-muted/50">
-        <div className="container px-4 md:px-6 mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-              What Drives Me
-            </h1>
-            <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed mt-4">
-              The principles that fuel my passion for technology and guide my
-              work.
-            </p>
-          </motion.div>
+      <section className="py-16 md:py-24">
+        <div className="container mx-auto max-w-6xl px-4 md:px-6">
+          <SectionHeader
+            icon={GraduationCap}
+            eyebrow="Education"
+            title={
+              <>
+                Academic <span className="text-primary">Background</span>
+              </>
+            }
+            description="My academic foundation and formal education."
+          />
 
-          <div className="grid gap-4 mt-12 md:grid-cols-2 lg:grid-cols-2">
-            {[
-              {
-                number: "01",
-                title: "Innovation First",
-                desc: "I believe in pushing the boundaries of what's possible with technology, always seeking creative solutions to complex problems.",
-                icon: Brain,
-                colorClass: "text-yellow-600 dark:text-yellow-400",
-              },
-              {
-                number: "02",
-                title: "Quality & Craftsmanship",
-                desc: "Every line of code I write is crafted with care, following best practices and maintaining high standards.",
-                icon: LucideAward,
-                colorClass: "text-blue-600 dark:text-blue-400",
-              },
-              {
-                number: "03",
-                title: "Continuous Learning",
-                desc: "Technology evolves rapidly, and I'm committed to staying at the forefront through continuous learning and experimentation.",
-                icon: BookOpen,
-                colorClass: "text-indigo-600 dark:text-indigo-400",
-              },
-              {
-                number: "04",
-                title: "Collaboration",
-                desc: "Great research is the product of great collaboration. I value open communication, knowledge sharing, and collective problem-solving.",
-                icon: Users,
-                colorClass: "text-green-600 dark:text-green-400",
-              },
-            ].map((item, index) => (
+          <div className="mx-auto mt-10 max-w-4xl space-y-4">
+            {education.map((edu, index) => (
               <motion.div
-                key={index}
+                key={edu.id}
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
                 transition={{
-                  duration: 0.5,
-                  delay: index * 0.1,
-                  type: "spring",
-                  stiffness: 100,
-                  damping: 15,
+                  duration: 0.45,
+                  delay: index * 0.08,
                 }}
-                className="w-full"
               >
-                <Card className="h-full border-2 hover:border-primary transition-all duration-300">
-                  <CardContent className="p-4 flex flex-row items-center gap-3">
-                    <div className={`${item.colorClass} shrink-0`}>
-                      <item.icon className="w-6 h-6" />
+                <Card className="transition-all duration-300 hover:border-primary/30 hover:shadow-md">
+                  <CardHeader className="p-5 pb-3 md:p-6 md:pb-3">
+                    <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+                      <div>
+                        <CardTitle className="text-lg md:text-xl">
+                          {edu.degree}
+                        </CardTitle>
+
+                        <p className="mt-1 text-sm font-medium text-primary">
+                          {edu.institution}
+                        </p>
+                      </div>
+
+                      <Badge variant="outline" className="w-fit">
+                        {edu.startDate} - {edu.endDate}
+                      </Badge>
                     </div>
-                    <div className="text-left">
-                      <h3 className="mt-1 text-xl font-semibold">
-                        {item.title}
-                      </h3>
-                      <p className="mt-2 text-muted-foreground text-sm leading-relaxed">
-                        {item.desc}
+                  </CardHeader>
+
+                  <CardContent className="px-5 pb-5 pt-0 md:px-6 md:pb-6">
+                    <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                      <span>{edu.location}</span>
+
+                      {edu.gpa && (
+                        <>
+                          <span>•</span>
+                          <span>CGPA: {edu.gpa}</span>
+                        </>
+                      )}
+                    </div>
+
+                    {edu.description && (
+                      <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                        {edu.description}
                       </p>
-                    </div>
+                    )}
                   </CardContent>
                 </Card>
               </motion.div>
@@ -195,6 +268,166 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      <section className="border-y bg-muted/20 py-16 md:py-24">
+        <div className="container mx-auto max-w-6xl px-4 md:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mx-auto max-w-4xl"
+          >
+            <Card className="overflow-hidden border-primary/20 bg-card/70 shadow-lg backdrop-blur">
+              <CardContent className="p-6 md:p-10">
+                <div className="flex flex-col gap-6 md:flex-row md:items-start">
+                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                    <BrainCircuit className="h-7 w-7" />
+                  </div>
+
+                  <div>
+                    <Badge variant="outline" className="mb-3 rounded-full">
+                      Current Focus
+                    </Badge>
+
+                    <h2 className="text-2xl font-bold md:text-3xl">
+                      Expanding Into AI Engineering
+                    </h2>
+
+                    <p className="mt-4 leading-7 text-muted-foreground">
+                      I&apos;m currently building practical knowledge in
+                      Generative AI and exploring how AI capabilities can be
+                      integrated into real-world software products.
+                    </p>
+
+                    <div className="mt-5 flex flex-wrap gap-2">
+                      {[
+                        "Generative AI",
+                        "LLM Applications",
+                        "RAG",
+                        "Embeddings",
+                        "AI APIs",
+                        "Intelligent Workflows",
+                      ].map((technology) => (
+                        <Badge key={technology} variant="secondary">
+                          {technology}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="py-16 md:py-24">
+        <div className="container mx-auto max-w-6xl px-4 md:px-6">
+          <SectionHeader
+            icon={Lightbulb}
+            eyebrow="Engineering Principles"
+            title={
+              <>
+                How I <span className="text-primary">Work</span>
+              </>
+            }
+            description="The principles that guide how I approach software engineering and problem solving."
+          />
+
+          <div className="mt-10 grid gap-4 md:grid-cols-2">
+            {principles.map((principle, index) => {
+              const Icon = principle.icon;
+
+              return (
+                <motion.div
+                  key={principle.number}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{
+                    duration: 0.45,
+                    delay: index * 0.08,
+                  }}
+                >
+                  <Card className="group h-full transition-all duration-300 hover:border-primary/30 hover:shadow-md">
+                    <CardContent className="flex gap-5 p-6">
+                      <div className="shrink-0">
+                        <span className="text-sm font-bold text-primary/60">
+                          {principle.number}
+                        </span>
+                      </div>
+
+                      <div className="flex-1">
+                        <div className="mb-3 flex items-center gap-3">
+                          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                            <Icon className="h-4 w-4" />
+                          </div>
+
+                          <h3 className="font-semibold">{principle.title}</h3>
+                        </div>
+
+                        <p className="text-sm leading-6 text-muted-foreground">
+                          {principle.description}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
     </>
+  );
+}
+
+interface SectionHeaderProps {
+  icon: LucideIcon;
+  eyebrow: string;
+  title: React.ReactNode;
+  description: string;
+}
+
+function SectionHeader({
+  icon: Icon,
+  eyebrow,
+  title,
+  description,
+}: SectionHeaderProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.5 }}
+      className="mx-auto max-w-3xl text-center"
+    >
+      <Badge variant="outline" className="mb-4 gap-2 rounded-full px-3 py-1">
+        <Icon className="h-3.5 w-3.5 text-primary" />
+        {eyebrow}
+      </Badge>
+
+      <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+        {title}
+      </h2>
+
+      <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-muted-foreground md:text-lg">
+        {description}
+      </p>
+    </motion.div>
+  );
+}
+
+function ProfileStat({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="rounded-xl border bg-card/60 p-4 text-center shadow-sm backdrop-blur">
+      <div className="text-xl font-bold text-primary md:text-2xl">{value}</div>
+
+      <div className="mt-1 text-xs text-muted-foreground md:text-sm">
+        {label}
+      </div>
+    </div>
   );
 }

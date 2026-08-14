@@ -70,22 +70,15 @@ export default function ContactPage() {
                     rel="noopener noreferrer"
                     className="flex items-center mb-2"
                   >
-                    {" "}
                     <div className="mr-4 rounded-full bg-primary/10 p-2">
-                      {" "}
-                      {getIconComponent(contact.icon)}{" "}
-                    </div>{" "}
+                      {getIconComponent(contact.icon)}
+                    </div>
                     <div>
-                      {" "}
-                      <h3 className="font-medium">{contact.name}</h3>{" "}
+                      <h3 className="font-medium">{contact.name}</h3>
                       <p className="text-sm text-muted-foreground">
-                        {" "}
-                        {contact.url.replace(
-                          /(mailto:|tel:|https:\/\/)/g,
-                          ""
-                        )}{" "}
-                      </p>{" "}
-                    </div>{" "}
+                        {contact.url.replace(/(mailto:|tel:|https:\/\/)/g, "")}
+                      </p>
+                    </div>
                   </motion.a>
                 ))}
 
